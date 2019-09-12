@@ -1,0 +1,15 @@
+# tasks.yml
+
+variables:
+  PIPENV_VENV_IN_PROJECT: 1
+shell: bash
+
+# Create virtual environment and install dependencies
+install:
+  script: pipenv install
+
+# Run reportmix inside the virtualenv
+mix:
+  params:
+    - ARGS
+  script: pipenv run python reportmix.py $ARGS

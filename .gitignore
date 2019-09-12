@@ -1,0 +1,23 @@
+#
+# .gitignore
+#
+
+# IDE
+.idea
+*.iml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+dist/
+
+# Pipenv
+.venv
+.env
+
+# Project
+/tmp
+/.reportmix
+/*.csv
+/*.json
