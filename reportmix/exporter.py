@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from reportmix.report.issue import Issue
 
@@ -9,10 +9,18 @@ class Exporter:
     Export a list of issues to a file.
     """
 
-    def export(self, dest: str, issues: List[Issue]):
+    def __init__(self, config: Dict[str, str]):
+        """
+        Initialize the report exporter with the given configuration.
+        :param config: Report exporter configuration.
+        """
+        self.config = config
+
+    def export(self, output_file: str, issues: List[Issue], fields: List[str]):
         """
         Export a list of issues to a file.
-        :param dest: Path to the output file.
+        :param output_file: Path to the output file.
         :param issues: List of issues to write.
+        :param fields: List of fields to include in the output report.
         """
         pass

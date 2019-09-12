@@ -10,9 +10,7 @@
     - [ ] Default `project_key` to `<groupId>:<artifactId>` for Maven projects
     - [ ] Improve API call (page size, etc.)
 - [ ] Improve export formats
-  - [ ] Allow to select exported fields (`--fields "name,description"`)
-  - [ ] Support a custom company logo for the HTML report format (`--html.logo URL`)
-- [ ] Improve configuration
+- [ ] Improve configuration and CLI
   - [ ] Validate properties (required, format, etc.)
 - [ ] Improve documentation and testing
 - [ ] Release and publish to PyPI

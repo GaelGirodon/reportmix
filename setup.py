@@ -30,7 +30,7 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
     keywords='report mix merge security dependency_check sonarqube owasp',
-    packages=find_packages(exclude=['assets', 'contrib', 'docs', 'tests']),
+    packages=find_packages(exclude=['assets', 'contrib', 'docs', 'scripts', 'tests']),
     python_requires='>=3.5',
     entry_points={
         'console_scripts': [

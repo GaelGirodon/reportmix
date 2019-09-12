@@ -23,6 +23,8 @@ class ConfigBuilder:
                 ConfigProperty("output_dir", "the location to write the report", True, "./"),
                 ConfigProperty("config_file", "the path to the configuration file", True, ".reportmix"),
                 ConfigProperty("format", "the report format to be generated (json, csv)", True, "csv"),
+                ConfigProperty("fields", "comma-separated list of fields to include in the output report", True, "all"),
+                ConfigProperty("logo", "the URL to the company logo to display on the HTML report", False)
             ],
             "dependency_check": dependency_check.properties,
             "sonarqube": sonarqube.properties
@@ -34,9 +36,9 @@ class ConfigBuilder:
 
         for group, props in self.properties.items():
             for p in props:
-                name = ["--" + p.name, "-" + p.name[0]] if group == GLOBAL_CONFIG else ["--" + group + "." + p.name]
+                name = "--" + p.name if group == GLOBAL_CONFIG else "--" + group + "." + p.name
                 description = p.description if not p.default else "%s (default: %s)" % (p.description, p.default)
-                self.parser.add_argument(*name, type=str, metavar=p.name.upper(),
+                self.parser.add_argument(name, type=str, metavar=p.name.upper(),
                                          default=argparse.SUPPRESS, help=description)
 
     def build(self) -> Dict[str, Union[str, Dict[str, str]]]:

@@ -13,3 +13,8 @@ mix:
   params:
     - ARGS
   script: pipenv run python reportmix.py $ARGS
+
+# A basic health check test
+test:
+  shell: powershell
+  script: ./scripts/Invoke-HealthCheck.ps1

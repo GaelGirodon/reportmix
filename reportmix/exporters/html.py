@@ -5,7 +5,7 @@ from typing import List
 import jinja2
 
 from reportmix.exporter import Exporter
-from reportmix.report.issue import Issue
+from reportmix.report.issue import Issue, FIELD_NAMES, issues_to_dicts
 from reportmix.report.severity import SEVERITIES
 
 
@@ -14,7 +14,7 @@ class HtmlExporter(Exporter):
     Export a merged report to a HTML file.
     """
 
-    def export(self, dest: str, issues: List[Issue]):
+    def export(self, output_file: str, issues: List[Issue], fields: List[str]):
         # Load HTML template
         templates = path.realpath(path.join(path.dirname(__file__), "..", "..", "assets", "templates"))
         env = jinja2.Environment(
@@ -40,8 +40,9 @@ class HtmlExporter(Exporter):
         for t in set([i.type for i in issues]):
             types[t] = len([i for i in issues if i.type == t])
         # Render and write report
-        with open(dest, "wb") as output_file:
-            output = template.render(title="Issues Report", issues=issues,
+        with open(output_file, "wb") as output_file:
+            output = template.render(title="Issues Report", logo=self.config["logo"],
+                                     issues=issues_to_dicts(issues), fields=fields, fieldnames=FIELD_NAMES,
                                      tools=tools, severities=severities, types=types)
             output_file.write(output.encode("utf-8"))
 
@@ -50,7 +51,7 @@ class HtmlExporter(Exporter):
 # Custom filters
 #
 
-def limit(value, max_length: str = 64) -> str:
+def limit(value, max_length: int = 64) -> str:
     """
     Limit a value to a maximum length. If the value length is greater than max_length,
     the value is truncated, '...' is added at the end of the string,
@@ -60,7 +61,8 @@ def limit(value, max_length: str = 64) -> str:
     :param max_length: Maximum string length (number of characters)
     :return: The output HTML code
     """
-    if len(value) <= max_length:
-        return value
+    val = str(value)
+    if len(val) <= max_length:
+        return val
     else:
-        return '<span title="{}">{}</span>'.format(value, value[:max_length] + "...")
+        return '<span title="{}">{}</span>'.format(val, val[:max_length] + "...")

@@ -9,44 +9,55 @@
         th, td {
             white-space: nowrap;
         }
+
+        .charts .title {
+            margin-bottom: 2.5rem;
+        }
     </style>
 </head>
 <body>
-<section class="hero is-dark">
+<section class="hero">
     <div class="hero-body">
         <div class="container">
-            <h1 class="title">
-                {{ title }}
-            </h1>
-            <h2 class="subtitle">
-                {{ tools.keys() | list | sort | join(" · ") }}
-            </h2>
+            <div class="columns is-vcentered">
+                <div class="column has-text-centered-mobile">
+                    <h1 class="title">
+                        {{ title }}
+                    </h1>
+                    <h2 class="subtitle">
+                        {{ tools.keys() | list | sort | join(" · ") }}
+                    </h2>
+                </div>
+                {% if logo %}
+                    <div class="column is-one-fifth-fullhd is-one-quarter has-text-right has-text-centered-mobile">
+                        <img src="{{ logo }}" alt="Company logo">
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </section>
 <section class="hero is-light">
     <div class="hero-body">
         <div class="container">
-            <div class="columns has-text-centered" style="margin-bottom: 2rem">
+            <div class="columns charts has-text-centered">
                 <div class="column is-one-third">
                     <h3 class="title is-5">Number of issues by tool</h3>
+                    <div>
+                        <canvas id="issuesByTool"></canvas>
+                    </div>
                 </div>
                 <div class="column is-one-third">
                     <h3 class="title is-5">Number of issues by severity</h3>
+                    <div>
+                        <canvas id="issuesBySeverity"></canvas>
+                    </div>
                 </div>
                 <div class="column is-one-third">
                     <h3 class="title is-5">Number of issues by type</h3>
-                </div>
-            </div>
-            <div class="columns">
-                <div class="column is-one-third">
-                    <canvas id="issuesByTool"></canvas>
-                </div>
-                <div class="column is-one-third">
-                    <canvas id="issuesBySeverity"></canvas>
-                </div>
-                <div class="column is-one-third">
-                    <canvas id="issuesByType"></canvas>
+                    <div>
+                        <canvas id="issuesByType"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,52 +70,24 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Tool name</th>
-                    <th>Tool version</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>Identifier</th>
-                    <th>Severity</th>
-                    <th>Score</th>
-                    <th>Confidence</th>
-                    <th>Count</th>
-                    <th>Source</th>
-                    <th>Scan date</th>
-                    <th>Subject id</th>
-                    <th>Subject name</th>
-                    <th>Subject description</th>
-                    <th>Subject location</th>
-                    <th>Project id</th>
-                    <th>Project name</th>
-                    <th>Project description</th>
-                    <th>Project version</th>
+                    {% for field in fields %}
+                        <th>{{ fieldnames[field] }}</th>
+                    {% endfor %}
                 </tr>
                 </thead>
                 <tbody>
                 {% for issue in issues %}
                     <tr>
                         <th>{{ loop.index }}</th>
-                        <td>{{ issue.tool_name }}</td>
-                        <td>{{ issue.tool_version }}</td>
-                        <td>{{ issue.name | limit(48) }}</td>
-                        <td>{{ issue.type }}</td>
-                        <td>{{ issue.description | limit }}</td>
-                        <td>{{ issue.identifier }}</td>
-                        <td>{{ issue.severity }}</td>
-                        <td>{{ issue.score }}</td>
-                        <td>{{ issue.confidence }}</td>
-                        <td>{{ issue.count }}</td>
-                        <td>{{ issue.source }}</td>
-                        <td>{{ issue.scan_date }}</td>
-                        <td>{{ issue.subject_id }}</td>
-                        <td>{{ issue.subject_name | limit(48) }}</td>
-                        <td>{{ issue.subject_description | limit }}</td>
-                        <td>{{ issue.subject_location }}</td>
-                        <td>{{ issue.project_id }}</td>
-                        <td>{{ issue.project_name | limit(48) }}</td>
-                        <td>{{ issue.project_description | limit }}</td>
-                        <td>{{ issue.project_version }}</td>
+                        {% for field in fields %}
+                            {% if field.endswith("name") %}
+                                <td>{{ issue[field] | limit(32) }}</td>
+                            {% elif field.endswith("description") %}
+                                <td>{{ issue[field] | limit(48) }}</td>
+                            {% else %}
+                                <td>{{ issue[field] }}</td>
+                            {% endif %}
+                        {% endfor %}
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -124,7 +107,8 @@
 <script>
     // Configuration
     var borderColor = "#f5f5f5";
-    var backgroundColors = ["#0097e6", "#8c7ae6", "#192a56", "#40739e", "#dcdde1", "#718093"];
+    var backgroundColor = ["#0097e6", "#8c7ae6", "#192a56", "#40739e", "#dcdde1", "#718093"];
+    var legendOptions = {position: 'right'};
     Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {
         backgroundColor: "#000000aa",
         color: "#ffffff",
@@ -134,6 +118,7 @@
             return context.dataset.data[context.dataIndex] > 0;
         }
     });
+
     // Issues by tool
     var issuesByToolCxt = document.getElementById('issuesByTool');
     var issuesByToolChart = new Chart(issuesByToolCxt, {
@@ -142,16 +127,15 @@
             labels: {{ tools.keys() | list | tojson }},
             datasets: [{
                 data: {{ tools.values() | list | tojson }},
-                backgroundColor: backgroundColors,
+                backgroundColor: backgroundColor,
                 borderColor: borderColor
             }]
         },
         options: {
-            legend: {
-                position: 'right'
-            }
+            legend: legendOptions
         }
     });
+
     // Issues by severity
     var issuesBySeverityCxt = document.getElementById('issuesBySeverity');
     var issuesBySeverityChart = new Chart(issuesBySeverityCxt, {
@@ -165,11 +149,10 @@
             }]
         },
         options: {
-            legend: {
-                position: 'right'
-            }
+            legend: legendOptions
         }
     });
+
     // Issues by type
     var issuesByTypeCxt = document.getElementById('issuesByType');
     var issuesByTypeChart = new Chart(issuesByTypeCxt, {
@@ -178,7 +161,7 @@
             labels: {{ types.keys() | list | tojson }},
             datasets: [{
                 data: {{ types.values() | list | tojson }},
-                backgroundColor: backgroundColors.reverse(),
+                backgroundColor: backgroundColor.reverse(),
                 borderColor: borderColor
             }]
         },

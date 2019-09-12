@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from datetime import datetime
 from typing import List
 
@@ -65,3 +66,46 @@ class Issue:
 
     def __repr__(self):
         return str(vars(self))
+
+
+#
+# Constants
+#
+
+FIELD_NAMES = OrderedDict()
+FIELD_NAMES["tool_name"] = "Tool name"
+FIELD_NAMES["tool_version"] = "Tool version"
+FIELD_NAMES["scan_date"] = "Scan date"
+FIELD_NAMES["name"] = "Name"
+FIELD_NAMES["description"] = "Description"
+FIELD_NAMES["identifier"] = "Identifier"
+FIELD_NAMES["type"] = "Type"
+FIELD_NAMES["severity"] = "Severity"
+FIELD_NAMES["count"] = "Count"
+FIELD_NAMES["confidence"] = "Confidence"
+FIELD_NAMES["score"] = "Score"
+FIELD_NAMES["source"] = "Source"
+FIELD_NAMES["subject_id"] = "Subject id"
+FIELD_NAMES["subject_name"] = "Subject name"
+FIELD_NAMES["subject_description"] = "Subject description"
+FIELD_NAMES["subject_location"] = "Subject location"
+FIELD_NAMES["project_id"] = "Project id"
+FIELD_NAMES["project_name"] = "Project name"
+FIELD_NAMES["project_description"] = "Project description"
+FIELD_NAMES["project_version"] = "Project version"
+FIELD_NAMES["tags"] = "Tags"
+
+FIELDS = list(FIELD_NAMES.keys())
+
+
+#
+# Utilities
+#
+
+def issues_to_dicts(issues: List[Issue]):
+    """
+    Convert a list of Issue objects to a list of dictionaries.
+    :param issues: List of Issue objects
+    :return: List of dictionaries
+    """
+    return [vars(issue) for issue in issues]
