@@ -1,6 +1,6 @@
 from typing import List, Dict
 
-from reportmix.report.issue import Issue
+from reportmix.models.issue import Issue
 
 
 class Exporter:

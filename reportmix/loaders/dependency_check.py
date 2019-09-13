@@ -6,8 +6,11 @@ from typing import List
 
 from reportmix.config.property import ConfigProperty
 from reportmix.loader import Loader
-from reportmix.report import severity
-from reportmix.report.issue import Issue
+from reportmix.models import severity
+from reportmix.models.issue import Issue
+from reportmix.models.project import Project
+from reportmix.models.subject import Subject
+from reportmix.models.tool import Tool
 
 # Configuration properties
 properties: List[ConfigProperty] = [
@@ -46,18 +49,25 @@ class DependencyCheckLoader(Loader):
                         confidence=row["CPE Confidence"],
                         count=int(row["Evidence Count"]),
                         source=row["Source"],
-                        scan_date=datetime.strptime(row["ScanDate"][:24], "%a, %d %b %Y %H:%M:%S"),
+                        date=datetime.strptime(row["ScanDate"][:24], "%a, %d %b %Y %H:%M:%S"),
                         tags=[],
-                        subject_id=row["Identifiers"],
-                        subject_name=row["Description"],
-                        subject_description=row["DependencyName"],
-                        subject_location=row["DependencyPath"],
-                        project_id=row["Project"],
-                        project_name=row["Project"],
-                        project_description="",
-                        project_version="",
-                        tool_name="Dependency Check",
-                        tool_version=""
+                        subject=Subject(
+                            identifier=row["Identifiers"],
+                            name=row["Description"],
+                            description=row["DependencyName"],
+                            location=row["DependencyPath"]
+                        ),
+                        project=Project(
+                            identifier=row["Project"],
+                            name=row["Project"],
+                            description="",
+                            version=""
+                        ),
+                        tool=Tool(
+                            identifier="dependency_check",
+                            name="Dependency Check",
+                            version=""
+                        )
                     ))
                 return issues
         except Exception as ex:

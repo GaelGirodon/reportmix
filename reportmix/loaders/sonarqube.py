@@ -6,8 +6,11 @@ import requests
 
 from reportmix.config.property import ConfigProperty
 from reportmix.loader import Loader
-from reportmix.report import severity
-from reportmix.report.issue import Issue
+from reportmix.models import severity
+from reportmix.models.issue import Issue
+from reportmix.models.project import Project
+from reportmix.models.subject import Subject
+from reportmix.models.tool import Tool
 
 # Configuration properties
 # https://docs.sonarqube.org/latest/analysis/analysis-parameters/
@@ -57,18 +60,25 @@ class SonarQubeLoader(Loader):
                     confidence="",
                     count=1,
                     source=issue["rule"],
-                    scan_date=datetime.strptime(issue["creationDate"], "%Y-%m-%dT%H:%M:%S%z"),
+                    date=datetime.strptime(issue["creationDate"], "%Y-%m-%dT%H:%M:%S%z"),
                     tags=issue["tags"],
-                    subject_id="",
-                    subject_name="",
-                    subject_description="",
-                    subject_location=issue["component"] + (":" + str(issue["line"]) if "line" in issue else ""),
-                    project_id=issue["project"],
-                    project_name=issue["project"],
-                    project_description="",
-                    project_version="",
-                    tool_name="SonarQube",
-                    tool_version=r.headers["Sonar-Version"]
+                    subject=Subject(
+                        identifier="",
+                        name="",
+                        description="",
+                        location=issue["component"] + (":" + str(issue["line"]) if "line" in issue else "")
+                    ),
+                    project=Project(
+                        identifier=issue["project"],
+                        name=issue["project"],
+                        description="",
+                        version=""
+                    ),
+                    tool=Tool(
+                        identifier="sonarqube",
+                        name="SonarQube",
+                        version=r.headers["Sonar-Version"]
+                    )
                 ))
             return issues
         except Exception as ex:

@@ -5,8 +5,8 @@ from typing import List
 import jinja2
 
 from reportmix.exporter import Exporter
-from reportmix.report.issue import Issue, FIELD_NAMES, issues_to_dicts
-from reportmix.report.severity import SEVERITIES
+from reportmix.models.issue import Issue
+from reportmix.models.severity import SEVERITIES
 
 
 class HtmlExporter(Exporter):
@@ -23,14 +23,15 @@ class HtmlExporter(Exporter):
         )
         # Custom filters
         env.filters["limit"] = limit
+        env.filters["prettyfield"] = pretty_field
         # Report template
         template = env.get_template('reportmix.html.jinja2')
 
-        # Prepare templates values
+        # Prepare templates values and statistics
         # Issues by tool
         tools = {}
-        for t in set([i.tool_name for i in issues]):
-            tools[t] = len([i for i in issues if i.tool_name == t])
+        for t in set([i.tool.name for i in issues]):
+            tools[t] = len([i for i in issues if i.tool.name == t])
         # Issues by severity
         severities = OrderedDict()
         for s in SEVERITIES:
@@ -39,10 +40,11 @@ class HtmlExporter(Exporter):
         types = {}
         for t in set([i.type for i in issues]):
             types[t] = len([i for i in issues if i.type == t])
+
         # Render and write report
         with open(output_file, "wb") as output_file:
             output = template.render(title="Issues Report", logo=self.config["logo"],
-                                     issues=issues_to_dicts(issues), fields=fields, fieldnames=FIELD_NAMES,
+                                     issues=[i.flatten() for i in issues], fields=fields,
                                      tools=tools, severities=severities, types=types)
             output_file.write(output.encode("utf-8"))
 
@@ -66,3 +68,13 @@ def limit(value, max_length: int = 64) -> str:
         return val
     else:
         return '<span title="{}">{}</span>'.format(val, val[:max_length] + "...")
+
+
+def pretty_field(value: str) -> str:
+    """
+    Format a snake_case field for display (snake_case -> Snake case)
+    and make some other adjustments (identifier => id).
+    :param value: Raw field name
+    :return: Field to display
+    """
+    return value.capitalize().replace("_", " ").replace("identifier", "id")

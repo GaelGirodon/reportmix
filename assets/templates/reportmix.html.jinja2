@@ -71,7 +71,7 @@
                 <tr>
                     <th>#</th>
                     {% for field in fields %}
-                        <th>{{ fieldnames[field] }}</th>
+                        <th>{{ field | prettyfield }}</th>
                     {% endfor %}
                 </tr>
                 </thead>
@@ -127,7 +127,7 @@
             labels: {{ tools.keys() | list | tojson }},
             datasets: [{
                 data: {{ tools.values() | list | tojson }},
-                backgroundColor: backgroundColor,
+                backgroundColor: backgroundColor.slice(),
                 borderColor: borderColor
             }]
         },
@@ -161,7 +161,7 @@
             labels: {{ types.keys() | list | tojson }},
             datasets: [{
                 data: {{ types.values() | list | tojson }},
-                backgroundColor: backgroundColor.reverse(),
+                backgroundColor: backgroundColor.slice().reverse(),
                 borderColor: borderColor
             }]
         },

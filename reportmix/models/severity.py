@@ -36,9 +36,6 @@ SEVERITIES: List[Severity] = [
     Severity("CRITICAL", "Critical")
 ]
 
-SEVERITY_IDS: List[str] = [s.id for s in SEVERITIES]
-SEVERITY_NAMES: List[str] = [s.name for s in SEVERITIES]
-
 
 #
 # Helpers
@@ -58,7 +55,7 @@ def guess(value: str) -> Union[Severity, None]:
         return SEVERITIES[1]
     if val == "low" or val == "minor":
         return SEVERITIES[2]
-    elif val == "medium":
+    elif val == "medium" or val == "moderate":
         return SEVERITIES[3]
     elif val == "high" or val == "major":
         return SEVERITIES[4]

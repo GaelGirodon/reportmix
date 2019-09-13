@@ -26,15 +26,15 @@ reportmix
 
 ### Arguments
 
-| Argument                    | Description                                                    | Default value |
-| --------------------------- | -------------------------------------------------------------- | ------------- |
-| `--help`                    | Show the help message and exit                                 |               |
-| `--verbose`                 | Run verbosely (display `DEBUG` logging)                        |               |
-| `--output_dir OUTPUT_DIR`   | The location to write the report                               | `./`          |
-| `--config_file CONFIG_FILE` | The path to the configuration file                             | `.reportmix`  |
-| `--format FORMAT`           | The report format to be generated (`csv`, `json`, `html`)      | `csv`         |
-| `--fields FIELDS`           | Comma-separated list of fields to include in the output report | _all_         |
-| `--logo LOGO`               | The URL to the company logo to display on the HTML report      |               |
+| Argument                    | Description                                                                          | Default value |
+| --------------------------- | ------------------------------------------------------------------------------------ | ------------- |
+| `--help`                    | Show the help message and exit                                                       |               |
+| `--verbose`                 | Run verbosely (display `DEBUG` logging)                                              |               |
+| `--output_dir OUTPUT_DIR`   | The location to write the report                                                     | `./`          |
+| `--config_file CONFIG_FILE` | The path to the configuration file                                                   | `.reportmix`  |
+| `--format FORMAT`           | The report format to be generated (`csv`, `json`, `html`)                            | `csv`         |
+| `--fields FIELDS`           | A comma-separated list of fields to include in the output report (CSV and HTML only) | _all_         |
+| `--logo LOGO`               | The URL to the company logo to display on the HTML report                            |               |
 
 Run `reportmix --help` to show the full help message.
 

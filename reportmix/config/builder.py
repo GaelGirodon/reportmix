@@ -23,7 +23,8 @@ class ConfigBuilder:
                 ConfigProperty("output_dir", "the location to write the report", True, "./"),
                 ConfigProperty("config_file", "the path to the configuration file", True, ".reportmix"),
                 ConfigProperty("format", "the report format to be generated (json, csv)", True, "csv"),
-                ConfigProperty("fields", "comma-separated list of fields to include in the output report", True, "all"),
+                ConfigProperty("fields", "a comma-separated list of fields to include in the output report "
+                                         "(CSV and HTML only)", True, "all"),
                 ConfigProperty("logo", "the URL to the company logo to display on the HTML report", False)
             ],
             "dependency_check": dependency_check.properties,

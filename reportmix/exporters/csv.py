@@ -2,7 +2,7 @@ import csv
 from typing import List
 
 from reportmix.exporter import Exporter
-from reportmix.report.issue import Issue
+from reportmix.models.issue import Issue
 
 
 class CsvExporter(Exporter):
@@ -16,4 +16,4 @@ class CsvExporter(Exporter):
                                     delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             writer.writeheader()
             for issue in issues:
-                writer.writerow(vars(issue))
+                writer.writerow(issue.flatten())
