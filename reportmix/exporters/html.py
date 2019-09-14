@@ -29,18 +29,17 @@ class HtmlExporter(Exporter):
 
         # Prepare templates values and statistics
         # Issues by tool
-        tools = {}
-        for t in set([i.tool.name for i in issues]):
+        tools = OrderedDict()
+        for t in sorted(set([i.tool.name for i in issues]), key=lambda tool_name: tool_name.casefold()):
             tools[t] = len([i for i in issues if i.tool.name == t])
         # Issues by severity
         severities = OrderedDict()
         for s in SEVERITIES:
             severities[s.name] = len([i for i in issues if i.severity == s])
         # Issues by type
-        types = {}
-        for t in set([i.type for i in issues]):
+        types = OrderedDict()
+        for t in sorted(set([i.type for i in issues]), key=lambda type: type.casefold()):
             types[t] = len([i for i in issues if i.type == t])
-
         # Render and write report
         with open(output_file, "wb") as output_file:
             output = template.render(title="Issues Report", logo=self.config["logo"],

@@ -7,6 +7,7 @@ from reportmix.exporters.csv import CsvExporter
 from reportmix.exporters.html import HtmlExporter
 from reportmix.exporters.json import JsonExporter
 from reportmix.loaders.dependency_check import DependencyCheckLoader
+from reportmix.loaders.npm_audit import NpmAuditLoader
 from reportmix.loaders.sonarqube import SonarQubeLoader
 from reportmix.models.issue import FLAT_FIELDS, Issue
 
@@ -24,6 +25,7 @@ class ReportMixer:
         self.config = config[GLOBAL_CONFIG]
         self.loaders = {
             "dependency_check": DependencyCheckLoader(config["dependency_check"]),
+            "npm_audit": NpmAuditLoader(config["npm_audit"]),
             "sonarqube": SonarQubeLoader(config["sonarqube"])
         }
         self.exporters = {

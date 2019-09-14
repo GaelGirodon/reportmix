@@ -1,6 +1,6 @@
 import inspect
 from datetime import datetime
-from typing import List, Dict, Union
+from typing import Dict, Union, Optional
 
 from reportmix.models.project import Project
 from reportmix.models.severity import Severity
@@ -16,37 +16,50 @@ class Issue:
     An issue extracted from a report.
     """
 
-    def __init__(self, identifier: str, name: str, type: str, description: str, date: datetime, tags: List[str],
-                 severity: Severity, score: str, confidence: str, count: int, source: str,
+    def __init__(self, ref: str, identifier: str, name: str, type: str, category: str, description: str, more: str,
+                 action: str, effort: str, analysis_date: Optional[datetime], severity: Severity, score: str,
+                 confidence: str, evidences: int, source: str, source_date: Optional[datetime], url: str,
                  tool: Tool, subject: Subject, project: Project):
         """
         Initialize an issue reported by a tool about a subject in a project.
-        :param identifier: Issue unique identifier
+        :param ref: Issue technical reference/identifier
+        :param identifier: Issue unique identifier (CVE, rule, ...)
         :param name: Issue short name
         :param type: Issue type (UPPER_CASE)
+        :param category: Issue category (e.g. CWE)
         :param description: A longer (but not too long) description of the issue
-        :param date: Analysis date and time
-        :param tags: Issue tags
+        :param more: More information about the issue
+        :param action: Recommended action to solve the issue
+        :param effort: Necessary effort to solve the issue (debt)
+        :param analysis_date: Analysis / report creation date and time
         :param severity: Issue severity
         :param score: Computed score for this issue
         :param confidence: Confidence about this issue
-        :param count: Number of evidences of this issue
+        :param evidences: Number of evidences of this issue
         :param source: Issue source database
+        :param source_date: Advisory, rule or ticket creation date
+        :param url: Advisory, rule or ticket URL
         :param tool: Scan tool
         :param subject: Subject (application feature, file, dependency, etc.) affected by the issue
         :param project: Project affected by the issue
         """
+        self.ref = ref
         self.identifier = identifier
         self.name = name
         self.type = type
+        self.category = category
         self.description = description
-        self.date = date
-        self.tags = tags
+        self.more = more
+        self.action = action
+        self.effort = effort
+        self.analysis_date = analysis_date
         self.severity = severity
         self.score = score
         self.confidence = confidence
-        self.count = count
+        self.evidences = evidences
         self.source = source
+        self.source_date = source_date
+        self.url = url
         self.tool = tool
         self.subject = subject
         self.project = project
@@ -58,25 +71,21 @@ class Issue:
         d["project"] = vars(self.project).copy()
         return d
 
-    def flatten(self, sub_sep: str = "_", list_sep: str = ", ") -> FlatIssue:
+    def flatten(self, sub_sep: str = "_") -> FlatIssue:
         """
         Flatten an issue to get a single level dictionary by mapping the object
-        to a dictionary, bringing sub-dictionaries to the first level
-        and concatenating lists of strings (["a", "b", "c"] => "a, b, c").
+        to a dictionary and bringing sub-dictionaries to the first level.
         Example: the attribute "name" of the sub-dictionary "project" will become
         an attribute of the root dictionary "project_name".
         :param sub_sep: Parent key and sub key separator
-        :param list_sep: List items separator
         :return: The flattened issue
         """
         dict_issue = self.to_dict()
         result = dict_issue.copy()
-        for key in ["tool", "subject", "project"]:  # Dictionaries
+        for key in ["tool", "subject", "project"]:  # Sub-dictionaries
             for sub_key in dict_issue[key].keys():
                 result[key + sub_sep + sub_key] = dict_issue[key][sub_key]
             result.pop(key)
-        for key in ["tags"]:  # Lists
-            result[key] = list_sep.join(dict_issue[key])
         return result
 
 

@@ -11,26 +11,32 @@ from reportmix.models.tool import Tool
 #
 
 date = datetime.now()
-issue = Issue("identifier", "name", "type", "description", date, ["tags"], SEVERITIES[1],
-              "score", "confidence", 1, "source", Tool("identifier", "name", "version"),
-              Subject("identifier", "name", "description", "location"),
-              Project("identifier", "name", "description", "version"))
-dict_issue = {"identifier": "identifier", "name": "name", "type": "type", "description": "description",
-              "date": date, "tags": ["tags"], "severity": SEVERITIES[1], "score": "score", "confidence": "confidence",
-              "count": 1, "source": "source",
+issue = Issue("ref", "identifier", "name", "type", "category", "description", "more", "action", "effort",
+              None, SEVERITIES[1], "score", "confidence", 1, "source", None, "url",
+              Tool("identifier", "name", "version"),
+              Subject("identifier", "name", "description", "version", "location", "license"),
+              Project("identifier", "name", "version"))
+dict_issue = {"ref": "ref", "identifier": "identifier", "name": "name", "type": "type", "category": "category",
+              "description": "description", "more": "more", "action": "action", "effort": "effort",
+              "analysis_date": None, "severity": SEVERITIES[1], "score": "score", "confidence": "confidence",
+              "evidences": 1, "source": "source", "source_date": None, "url": "url",
               "tool": {"identifier": "identifier", "name": "name", "version": "version"},
               "subject": {
-                  "identifier": "identifier", "name": "name", "description": "description", "location": "location"
+                  "identifier": "identifier", "name": "name", "description": "description",
+                  "version": "version", "location": "location", "license": "license"
               },
               "project": {
-                  "identifier": "identifier", "name": "name", "description": "description", "version": "version"
+                  "identifier": "identifier", "name": "name", "version": "version"
               }}
-flat_issue = {"identifier": "identifier", "name": "name", "type": "type", "description": "description",
-              "date": date, "tags": "tags", "severity": SEVERITIES[1], "score": "score", "confidence": "confidence",
-              "count": 1, "source": "source", "tool_identifier": "identifier", "tool_name": "name",
-              "tool_version": "version", "subject_identifier": "identifier", "subject_name": "name",
-              "subject_description": "description", "subject_location": "location", "project_identifier": "identifier",
-              "project_name": "name", "project_description": "description", "project_version": "version"}
+flat_issue = {"ref": "ref", "identifier": "identifier", "name": "name", "type": "type", "category": "category",
+              "description": "description", "more": "more", "action": "action", "effort": "effort",
+              "analysis_date": None, "severity": SEVERITIES[1], "score": "score", "confidence": "confidence",
+              "evidences": 1, "source": "source", "source_date": None, "url": "url",
+              "tool_identifier": "identifier", "tool_name": "name", "tool_version": "version",
+              "subject_identifier": "identifier", "subject_name": "name", "subject_description": "description",
+              "subject_version": "version", "subject_location": "location", "subject_license": "license",
+              "project_identifier": "identifier", "project_name": "name", "project_version": "version"
+              }
 
 
 #

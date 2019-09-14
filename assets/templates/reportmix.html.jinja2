@@ -82,10 +82,8 @@
                         {% for field in fields %}
                             {% if field.endswith("name") %}
                                 <td>{{ issue[field] | limit(32) }}</td>
-                            {% elif field.endswith("description") %}
-                                <td>{{ issue[field] | limit(48) }}</td>
                             {% else %}
-                                <td>{{ issue[field] }}</td>
+                                <td>{{ issue[field] | limit(48) }}</td>
                             {% endif %}
                         {% endfor %}
                     </tr>

@@ -40,32 +40,39 @@ class DependencyCheckLoader(Loader):
                 issues = []
                 for row in report:
                     issues.append(Issue(
-                        name=row["CWE"],
-                        type="VULNERABILITY",
-                        description=row["Vulnerability"],
+                        ref="",
                         identifier=row["CVE"],
+                        name=row["CVE"],
+                        type="VULNERABILITY",
+                        category=row["CWE"],
+                        description=row["Vulnerability"],
+                        more="",
+                        action="",
+                        effort="",
+                        analysis_date=datetime.strptime(row["ScanDate"][:24], "%a, %d %b %Y %H:%M:%S"),
                         severity=severity.guess(row["CVSSv3_BaseSeverity"]),
                         score=row["CVSSv3"],
                         confidence=row["CPE Confidence"],
-                        count=int(row["Evidence Count"]),
+                        evidences=int(row["Evidence Count"]),
                         source=row["Source"],
-                        date=datetime.strptime(row["ScanDate"][:24], "%a, %d %b %Y %H:%M:%S"),
-                        tags=[],
+                        source_date=None,
+                        url="",
+                        tool=Tool(
+                            identifier="dependency_check",
+                            name="Dependency-Check",
+                            version=""
+                        ),
                         subject=Subject(
                             identifier=row["Identifiers"],
                             name=row["Description"],
                             description=row["DependencyName"],
-                            location=row["DependencyPath"]
+                            version="",
+                            location=row["DependencyPath"],
+                            license=row["License"]
                         ),
                         project=Project(
                             identifier=row["Project"],
                             name=row["Project"],
-                            description="",
-                            version=""
-                        ),
-                        tool=Tool(
-                            identifier="dependency_check",
-                            name="Dependency Check",
                             version=""
                         )
                     ))

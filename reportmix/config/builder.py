@@ -5,7 +5,7 @@ from os.path import exists, realpath
 from typing import Union, Dict
 
 from reportmix.config.property import ConfigProperty
-from reportmix.loaders import dependency_check, sonarqube
+from reportmix.loaders import dependency_check, sonarqube, npm_audit
 
 # Configuration global group name (for global configuration properties)
 GLOBAL_CONFIG = "global"
@@ -28,6 +28,7 @@ class ConfigBuilder:
                 ConfigProperty("logo", "the URL to the company logo to display on the HTML report", False)
             ],
             "dependency_check": dependency_check.properties,
+            "npm_audit": npm_audit.properties,
             "sonarqube": sonarqube.properties
         }
 
