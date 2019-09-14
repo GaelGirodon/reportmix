@@ -7,7 +7,6 @@
   - [ ] Dependency Check:
     - [ ] Use JSON report instead of CSV
   - [ ] SonarQube:
-    - [ ] Improve API call (page size, etc.)
     - [ ] Default `project_key` to `<groupId>:<artifactId>` for Maven projects
 - [ ] Improve export formats
    - [ ] Allow to override the value of some fields (e.g. `version`, `application`, ...)

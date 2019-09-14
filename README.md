@@ -101,7 +101,7 @@ Reports produced by the following tools are currently supported:
   or **configure** ReportMix (`dependency_check.report_file`) to look for the file somewhere else
 - :heavy_check_mark: **Run ReportMix**
 
-> :bookmark_tabs: [Dependency-Check loader](reportmix/loaders/dependency_check.py)
+> → [Dependency-Check loader](reportmix/loaders/dependency_check.py)
 
 ### npm audit
 
@@ -111,7 +111,7 @@ Reports produced by the following tools are currently supported:
   or **configure** ReportMix (`npm_audit.report_file`) to look for the file somewhere else
 - :heavy_check_mark: **Run ReportMix**
 
-> :bookmark_tabs: [npm audit loader](reportmix/loaders/npm_audit.py)
+> → [npm audit loader](reportmix/loaders/npm_audit.py)
 
 ### SonarQube
 
@@ -120,7 +120,7 @@ Reports produced by the following tools are currently supported:
   and [authentication](https://docs.sonarqube.org/latest/extend/web-api/) settings
 - :heavy_check_mark: **Run ReportMix**
 
-> :bookmark_tabs: [SonarQube loader](reportmix/loaders/sonarqube.py)
+> → [SonarQube loader](reportmix/loaders/sonarqube.py)
 
 ## Development
 
