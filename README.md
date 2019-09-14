@@ -1,5 +1,9 @@
 # ReportMix
 
+[![license](https://img.shields.io/github/license/GaelGirodon/reportmix?color=informational&style=flat-square)](https://github.com/GaelGirodon/reportmix/blob/master/LICENSE)
+[![build](https://img.shields.io/azure-devops/build/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
+[![tests](https://img.shields.io/azure-devops/tests/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
+
 Merge reports from [multiple tools](#supported-reports) into a single file.
 
 > :warning: This tool is only in early alpha stage, not safe for production usage!
