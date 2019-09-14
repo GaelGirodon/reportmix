@@ -16,6 +16,9 @@ dist/
 .venv
 .env
 
+# Pytest
+test-results.xml
+
 # Project
 /tmp
 /.reportmix

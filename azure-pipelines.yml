@@ -1,0 +1,46 @@
+#
+# Azure Pipelines
+#
+
+trigger:
+  - master
+
+variables:
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+stages:
+  - stage: Build
+    displayName: Build stage
+    jobs:
+      - job: Build
+        displayName: Build job
+        pool:
+          vmImage: $(vmImageName)
+
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.7'
+            displayName: 'Use Python 3.7'
+
+          - script: python -m pip install --upgrade pip
+            displayName: 'Install pip'
+
+          - script: pip install --user --upgrade pipenv
+            displayName: 'Install pipenv'
+
+          - bash: echo "##vso[task.prependpath]/home/vsts/.local/bin"
+            displayName: 'Add pipenv to PATH'
+
+          - script: pipenv install
+            displayName: 'Install dependencies'
+
+          - script: pipenv run pytest -vv tests --doctest-modules --junitxml=test-results.xml
+            displayName: 'Test'
+
+          - task: PublishTestResults@2
+            displayName: 'Publish test results'
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFiles: test-results.xml

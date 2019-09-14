@@ -15,7 +15,7 @@ foreach ($c in $commands) {
     $command = "`npipenv run python reportmix.py $c"
     Write-Host -ForegroundColor Cyan "$command"
     Invoke-Expression "pipenv run python reportmix.py $c"
-    $sum += if ($?) { 0 } else { 1 }
+    $sum += if (!$? -or $LASTEXITCODE -gt 0) { 1 } else { 0 }
 }
 
 if ($sum -gt 0) {
