@@ -22,3 +22,19 @@ test:
 healthcheck:
   shell: powershell
   script: ./scripts/Invoke-HealthCheck.ps1
+
+# Build package
+package:
+  script:
+    - python -m pip install --upgrade --quiet setuptools wheel twine
+    - python setup.py --quiet sdist bdist_wheel
+
+# Check and publish to PyPI
+publish:
+  script:
+    - python -m twine check dist/*
+    - echo "python -m twine upload dist/*"
+
+# Clean dist
+clean:
+  script: rm -r build dist *.egg-info || true

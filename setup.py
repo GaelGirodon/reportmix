@@ -15,6 +15,7 @@ setup(
     description='Merge reports from multiple tools into a single file',
     long_description=long_description,
     long_description_content_type='text/markdown',
+    include_package_data=True,
     url='https://github.com/GaelGirodon/reportmix',
     author='Gael Girodon',
     author_email='contact@gaelgirodon.fr',
@@ -30,7 +31,7 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
     keywords='report mix merge security dependency-check npm audit sonarqube owasp',
-    packages=find_packages(exclude=['assets', 'contrib', 'docs', 'scripts', 'tests']),
+    packages=find_packages(exclude=['tests', 'tests.*']),
     python_requires='>=3.5',
     entry_points={
         'console_scripts': [

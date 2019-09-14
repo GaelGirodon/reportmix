@@ -1,23 +1,21 @@
 # ReportMix
 
-[![license](https://img.shields.io/github/license/GaelGirodon/reportmix?color=informational&style=flat-square)](https://github.com/GaelGirodon/reportmix/blob/master/LICENSE)
-[![build](https://img.shields.io/azure-devops/build/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
-[![tests](https://img.shields.io/azure-devops/tests/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
+[![PyPI](https://img.shields.io/pypi/v/reportmix?style=flat-square)](https://pypi.org/project/reportmix/)
+[![License](https://img.shields.io/github/license/GaelGirodon/reportmix?color=informational&style=flat-square)](https://github.com/GaelGirodon/reportmix/blob/master/LICENSE)
+[![Python version](https://img.shields.io/pypi/pyversions/reportmix?style=flat-square)](https://pypi.org/project/reportmix/)
+[![Build](https://img.shields.io/azure-devops/build/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
+[![Tests](https://img.shields.io/azure-devops/tests/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
 
 Merge reports from [multiple tools](#supported-reports) into a single file.
 
-> :warning: This tool is only in early alpha stage, not safe for production usage!
+> :warning: This tool is only in alpha stage, not safe for production usage!
 
 ## Install
 
-Install (or run) **ReportMix** using [pipx](https://pypi.org/project/pipx/):
+Install **ReportMix** from [PyPI](https://pypi.org/project/reportmix/):
 
 ```shell
-# Install and make it available on PATH
-pipx install --spec git+https://github.com/GaelGirodon/reportmix.git@0.1.0 reportmix
-
-# Run only
-pipx run --spec git+https://github.com/GaelGirodon/reportmix.git@0.1.0 reportmix
+pip install reportmix
 ```
 
 ## Usage
@@ -149,6 +147,7 @@ pipenv shell
 - [logging — Python 3 documentation](https://docs.python.org/3/howto/logging.html)
 - [A sample Python project](https://github.com/pypa/sampleproject)
 - [Cowsay](https://github.com/VaasuDevanS/cowsay-python)
+- [twine · PyPI](https://pypi.org/project/twine/)
 
 ## License
 

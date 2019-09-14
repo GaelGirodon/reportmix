@@ -1,5 +1,4 @@
 from collections import OrderedDict
-from os import path
 from typing import List
 
 import jinja2
@@ -16,9 +15,8 @@ class HtmlExporter(Exporter):
 
     def export(self, output_file: str, issues: List[Issue], fields: List[str]):
         # Load HTML template
-        templates = path.realpath(path.join(path.dirname(__file__), "..", "..", "assets", "templates"))
         env = jinja2.Environment(
-            loader=jinja2.FileSystemLoader(templates),
+            loader=jinja2.PackageLoader("reportmix.exporters", "templates"),
             autoescape=jinja2.select_autoescape(['html'])
         )
         # Custom filters

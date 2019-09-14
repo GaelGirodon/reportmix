@@ -1,5 +1,8 @@
 # Include the README
 include README.md
 
+# Include HTML template
+include reportmix/exporters/templates/reportmix.html.jinja2
+
 # Include the license file
 include LICENSE
