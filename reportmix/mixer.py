@@ -1,4 +1,5 @@
 import logging
+import re
 from os import path
 from typing import Dict, Union, List
 
@@ -65,17 +66,18 @@ class ReportMixer:
         """
 
         # Format
-        output_format: str = self.config["format"]
-        if output_format not in self.exporters.keys():
-            logging.error("Format %s is not supported", output_format)
+        output_formats_raw: str = self.config["formats"]
+        format_pattern = "^((F),)*(F)$".replace("F", "|".join(self.exporters.keys()))
+        if not re.match(format_pattern, output_formats_raw):
+            logging.error("Formats list '%s' is invalid", output_formats_raw)
             return
+        output_formats = output_formats_raw.split(",")
 
         # File
         output_dir: str = path.realpath(self.config["output_dir"])
         if not path.exists(output_dir) or not path.isdir(output_dir):
             logging.error("Invalid output directory %s", output_dir)
             return
-        output_file_path = path.join(output_dir, "reportmix." + output_format)
 
         # Fields (intersection between all fields and selected fields)
         fields = FLAT_FIELDS
@@ -85,6 +87,8 @@ class ReportMixer:
             fields = [f for f in only_fields_list if f in fields]
 
         # Exporter
-        logging.debug("Exporting merged report (format: %s, fields: [%s])", output_format, ", ".join(fields))
-        self.exporters[output_format].export(output_file_path, issues, fields)
-        logging.info("Merged report exported: %s", output_file_path)
+        for output_format in output_formats:
+            output_file_path = path.join(output_dir, "reportmix." + output_format)
+            logging.debug("Exporting merged report (format: %s, fields: [%s])", output_format, ", ".join(fields))
+            self.exporters[output_format].export(output_file_path, issues, fields)
+            logging.info("Merged report exported: %s", output_file_path)

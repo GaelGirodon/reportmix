@@ -43,7 +43,7 @@ class NpmAuditLoader(Loader):
                     for f in a["findings"]:
                         issues.append(Issue(
                             ref=a["id"],
-                            identifier=", ".join(a["cves"]),
+                            identifier=", ".join(a["cves"]) or a["title"],
                             name=a["title"],
                             type="VULNERABILITY",
                             category=a["cwe"],

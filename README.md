@@ -26,17 +26,20 @@ reportmix
 
 ### Arguments
 
-| Argument                    | Description                                                                          | Default value |
-| --------------------------- | ------------------------------------------------------------------------------------ | ------------- |
-| `--help`                    | Show the help message and exit                                                       |               |
-| `--verbose`                 | Run verbosely (display `DEBUG` logging)                                              |               |
-| `--output_dir OUTPUT_DIR`   | The location to write the report                                                     | `./`          |
-| `--config_file CONFIG_FILE` | The path to the configuration file                                                   | `.reportmix`  |
-| `--format FORMAT`           | The report format to be generated (`csv`, `json`, `html`)                            | `csv`         |
-| `--fields FIELDS`           | A comma-separated list of fields to include in the output report (CSV and HTML only) | _all_         |
-| `--logo LOGO`               | The URL to the company logo to display on the HTML report                            |               |
+| Argument                    | Description                                                | Default value |
+| --------------------------- | ---------------------------------------------------------- | ------------- |
+| `--help`                    | Show the help message and exit                             |               |
+| `--verbose`                 | Run verbosely (display `DEBUG` logging)                    |               |
+| `--output_dir OUTPUT_DIR`   | The location to write the report                           | `./`          |
+| `--config_file CONFIG_FILE` | The path to the configuration file                         | `.reportmix`  |
+| `--formats FORMATS`         | Report formats to be generated (`csv`, `json`, `html`)     | `html`        |
+| `--fields FIELDS`           | Fields to include in the output report (CSV and HTML only) | _all_         |
+| `--logo LOGO`               | The URL to the company logo to display on the HTML report  |               |
 
 Run `reportmix --help` to show the full help message.
+
+Plural properties (`formats`, `fields`, ...) support a single value
+or a comma-separated list of items (e.g. `--formats "csv,html,json"`).
 
 Tool-specific configuration arguments are documented in the help message
 and [below](#supported-reports).
@@ -49,7 +52,7 @@ or create a configuration file `.reportmix` in the working directory:
 ```ini
 [global]
 output_dir=target
-format=html
+formats=html,csv,json
 fields=tool_name,tool_version,name,description,type,severity,subject_name
 logo=http://acme.com/img/logo.png
 
@@ -67,7 +70,7 @@ project_key=acme:myproject
 This configuration can also be passed as command-line arguments:
 
 ```shell
-python reportmix.py --output_dir target --format html \
+python reportmix.py --output_dir target --formats "html,csv,json" \
     dependency_check.report_file "target/dependency-check-report.csv" \
     npm_audit.report_file "web-app/npm-audit.json" \
     sonarqube.host_url "http://sonarqube.acme.corp" sonarqube.project_key "acme:myproject"

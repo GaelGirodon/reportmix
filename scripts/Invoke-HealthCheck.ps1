@@ -7,9 +7,7 @@
 $commands = @(
     "--help",
     "",
-    "--format csv",
-    "--format html",
-    "--format json"
+    "--formats csv,html,json"
 )
 
 $sum = 0

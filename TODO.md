@@ -10,7 +10,6 @@
     - [ ] Improve API call (page size, etc.)
     - [ ] Default `project_key` to `<groupId>:<artifactId>` for Maven projects
 - [ ] Improve export formats
-   - [ ] Allow exporting to multiple formats at once (`--format "csv,html,json"`)
    - [ ] Allow to override the value of some fields (e.g. `version`, `application`, ...)
    - [ ] Add a header with a summary table in the HTML report
 - [ ] Improve configuration and CLI
