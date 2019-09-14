@@ -1,7 +1,7 @@
 # TODO
 
 - [ ] Improve loaders
-  - [ ] Support more tools / report formats (NPM / `npm audit --json`, Checkmarx, ...)
+  - [ ] Support more tools / report formats (Checkmarx, ...)
   - [ ] Improve existing loaders (mapping)
   - [ ] Allow to enable only some tools (`--tools "dependency_check,sonarqube"`)
   - [ ] Dependency Check:
