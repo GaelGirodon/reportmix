@@ -1,10 +1,12 @@
 import argparse
 import configparser
 import logging
+import re
 from os.path import exists, realpath
 from typing import Union, Dict
 
 from reportmix.config.property import ConfigProperty
+from reportmix.errors import AppError
 from reportmix.loaders import dependency_check, sonarqube, npm_audit
 
 # Configuration global group name (for global configuration properties)
@@ -22,8 +24,10 @@ class ConfigBuilder:
             GLOBAL_CONFIG: [
                 ConfigProperty("output_dir", "the location to write the report", True, "./"),
                 ConfigProperty("config_file", "the path to the configuration file", True, ".reportmix"),
-                ConfigProperty("formats", "Report formats to be generated (csv, html, json)", True, "html"),
-                ConfigProperty("fields", "fields to include in the output report (CSV and HTML only)", True, "all"),
+                ConfigProperty("formats", "Report formats to be generated (csv, html, json)", True, "html",
+                               "^((F),)*(F)$".replace("F", "csv|html|json")),
+                ConfigProperty("fields", "fields to include in the output report (CSV and HTML only)", True, "all",
+                               "^((\\w+),)*(\\w+)$"),
                 ConfigProperty("logo", "the URL to the company logo to display on the HTML report", False)
             ],
             "dependency_check": dependency_check.properties,
@@ -71,13 +75,28 @@ class ConfigBuilder:
                     if cp.has_option(group, p.name):
                         config.setdefault(group, {})[p.name] = cp[group][p.name]
 
-        # Append/override values from command-line and check required properties
+        # Append/override values from command-line
         logging.debug("Update configuration with command-line arguments")
         for group, props in self.properties.items():
             for p in props:
                 name = p.name if group == GLOBAL_CONFIG else group + "." + p.name
                 if name in console_config:
                     config.setdefault(group, {})[p.name] = console_config[name]
+
+        # Check configuration properties
+        err_count = 0
+        for group, props in self.properties.items():
+            for p in props:
+                name = p.name if group == GLOBAL_CONFIG else group + "." + p.name
+                if p.mandatory and not config[group][p.name]:
+                    logging.error("Property '%s' is required", name)
+                    err_count += 1
+                elif p.pattern and not re.match(p.pattern, config[group][p.name]):
+                    logging.error("Value of property '%s' is invalid", name)
+                    err_count += 1
+        if err_count > 0:
+            logging.error("Configuration is incorrect, fix previous issues and run ReportMix again")
+            raise AppError()
 
         logging.debug("Configuration: %s", str(config))
         return config

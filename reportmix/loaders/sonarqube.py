@@ -12,15 +12,18 @@ from reportmix.models.severity import SEVERITIES
 from reportmix.models.subject import Subject
 from reportmix.models.tool import Tool
 
+# SonarQube issue types
+types = ["CODE_SMELL", "BUG", "VULNERABILITY", "SECURITY_HOTSPOT"]
+
 # Configuration properties
 # https://docs.sonarqube.org/latest/analysis/analysis-parameters/
 properties: List[ConfigProperty] = [
-    ConfigProperty("host_url", "the server URL", True, "http://localhost:9000"),
+    ConfigProperty("host_url", "the server URL", False, "http://localhost:9000"),
     ConfigProperty("login", "the login or authentication token"),
     ConfigProperty("password", "the password that goes with the login username"),
-    ConfigProperty("project_key", "the project's unique key", True),
-    ConfigProperty("types", "comma-separated list of types (CODE_SMELL,BUG,VULNERABILITY,SECURITY_HOTSPOT)",
-                   True, "VULNERABILITY")
+    ConfigProperty("project_key", "the project's unique key"),
+    ConfigProperty("types", "issue types ({})".format(", ".join(types)), False, types[2],
+                   "^((T),)*(T)$".replace("T", "|".join(types)))
 ]
 
 
@@ -54,7 +57,7 @@ class SonarQubeLoader(Loader):
 
         # Issues info
         issues_url = "{}/api/issues/search?componentKeys={}&statuses=OPEN,CONFIRMED,REOPENED&s=STATUS&types={}&ps=500" \
-            .format(self.config["host_url"], self.config["project_key"], (self.config["types"] or ""))
+            .format(self.config["host_url"], self.config["project_key"], (self.config["types"] or types[2]))
         try:
             logging.debug("Fetching issues from %s", issues_url)
             resp = requests.get(issues_url, auth=auth)

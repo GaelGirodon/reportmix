@@ -14,7 +14,7 @@ from reportmix.models.tool import Tool
 
 # Configuration properties
 properties: List[ConfigProperty] = [
-    ConfigProperty("report_file", "path to the report file", True, "dependency-check-report.csv")
+    ConfigProperty("report_file", "path to the report file", False, "dependency-check-report.csv")
 ]
 
 

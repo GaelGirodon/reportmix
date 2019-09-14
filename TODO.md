@@ -13,6 +13,5 @@
    - [ ] Allow to override the value of some fields (e.g. `version`, `application`, ...)
    - [ ] Add a header with a summary table in the HTML report
 - [ ] Improve configuration and CLI
-  - [ ] Validate properties (required, format, etc.)
 - [ ] Improve documentation and testing
 - [ ] Release and publish to PyPI

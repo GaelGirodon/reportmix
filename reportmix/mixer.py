@@ -1,8 +1,8 @@
 import logging
-import re
 from os import path
 from typing import Dict, Union, List
 
+from reportmix import AppError
 from reportmix.config.builder import GLOBAL_CONFIG
 from reportmix.exporters.csv import CsvExporter
 from reportmix.exporters.html import HtmlExporter
@@ -43,7 +43,7 @@ class ReportMixer:
         issues = self._load()
         if len(issues) == 0:
             logging.warning("No issues to export, exiting")
-            return
+            raise AppError()
         # Export
         self._export(issues)
 
@@ -65,19 +65,11 @@ class ReportMixer:
         Export a list of issues to a report file.
         """
 
-        # Format
-        output_formats_raw: str = self.config["formats"]
-        format_pattern = "^((F),)*(F)$".replace("F", "|".join(self.exporters.keys()))
-        if not re.match(format_pattern, output_formats_raw):
-            logging.error("Formats list '%s' is invalid", output_formats_raw)
-            return
-        output_formats = output_formats_raw.split(",")
-
         # File
         output_dir: str = path.realpath(self.config["output_dir"])
         if not path.exists(output_dir) or not path.isdir(output_dir):
             logging.error("Invalid output directory %s", output_dir)
-            return
+            raise AppError()
 
         # Fields (intersection between all fields and selected fields)
         fields = FLAT_FIELDS
@@ -87,7 +79,7 @@ class ReportMixer:
             fields = [f for f in only_fields_list if f in fields]
 
         # Exporter
-        for output_format in output_formats:
+        for output_format in self.config["formats"].split(","):
             output_file_path = path.join(output_dir, "reportmix." + output_format)
             logging.debug("Exporting merged report (format: %s, fields: [%s])", output_format, ", ".join(fields))
             self.exporters[output_format].export(output_file_path, issues, fields)
