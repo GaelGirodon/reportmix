@@ -2,8 +2,8 @@ import logging
 from os import path
 from typing import Dict, Union, List
 
-from reportmix import AppError
 from reportmix.config.builder import GLOBAL_CONFIG
+from reportmix.errors import AppError
 from reportmix.exporters.csv import CsvExporter
 from reportmix.exporters.html import HtmlExporter
 from reportmix.exporters.json import JsonExporter

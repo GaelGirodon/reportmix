@@ -5,7 +5,7 @@ variables:
 shell: bash
 
 # Create virtual environment and install dependencies
-install:
+setup:
   script: pipenv install
 
 # Run reportmix inside the virtualenv
@@ -28,6 +28,10 @@ package:
   script:
     - python -m pip install --upgrade --quiet setuptools wheel twine
     - python setup.py --quiet sdist bdist_wheel
+
+# Install locally
+install:
+  script: python setup.py install
 
 # Check and publish to PyPI
 publish:
