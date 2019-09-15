@@ -6,7 +6,9 @@ shell: bash
 
 # Create virtual environment and install dependencies
 setup:
-  script: pipenv install
+  script:
+    - pipenv install --dev
+    - echo "pipenv shell"
 
 # Run reportmix inside the virtualenv
 mix:
@@ -37,7 +39,25 @@ install:
 publish:
   script:
     - python -m twine check dist/*
+    - echo "python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*"
     - echo "python -m twine upload dist/*"
+
+# Release a new version
+release:
+  shell: powershell
+  variables:
+    PYPI_PROJECT: "https://pypi.org/project/reportmix"
+  params:
+    - VERSION
+  script:
+    - 'echo "Version: $env:VERSION"'
+    - 'if ((Get-Content -Raw .\setup.py) -notlike "*$env:VERSION*") { echo "Update setup.py"; exit 1; }'
+    - 'try { Invoke-WebRequest "$env:PYPI_PROJECT/$env:VERSION/" -Method HEAD | Out-Null } catch { echo "Publish to PyPI" ; exit 2; }'
+    - 'if ((Get-Content -Raw .\CHANGELOG.md) -notlike "*$env:VERSION*") { echo "Update CHANGELOG.md"; exit 3; }'
+    - git add .
+    - git commit -m "Release $env:VERSION"
+    - git tag -a "$env:VERSION" -m "$env:VERSION"
+    - echo "git push && git push --tags"
 
 # Clean dist
 clean:

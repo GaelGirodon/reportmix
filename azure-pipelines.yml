@@ -33,7 +33,7 @@ stages:
           - bash: echo "##vso[task.prependpath]/home/vsts/.local/bin"
             displayName: 'Add pipenv to PATH'
 
-          - script: pipenv install
+          - script: pipenv install --dev
             displayName: 'Install dependencies'
 
           - script: pipenv run pytest -vv tests --doctest-modules --junitxml=test-results.xml

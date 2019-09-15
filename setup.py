@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='reportmix',
-    version='0.1.0',
+    version='0.1.1',
     description='Merge reports from multiple tools into a single file',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -25,18 +25,20 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.7'
     ],
     keywords='report mix merge security dependency-check npm audit sonarqube owasp',
     packages=find_packages(exclude=['tests*']),
     include_package_data=True,
-    python_requires='>=3.5',
+    python_requires='>=3.7',
+    install_requires=[
+        "requests>=2.22.0",
+        "jinja2>=2.10.1"
+    ],
     entry_points={
         'console_scripts': [
-            'reportmix=reportmix.main:main',
-        ],
+            'reportmix=reportmix.main:main'
+        ]
     },
     project_urls={
         'Bug Reports': 'https://github.com/GaelGirodon/reportmix/issues',

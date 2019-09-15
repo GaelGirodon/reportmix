@@ -14,4 +14,3 @@
 - [ ] Improve configuration and CLI
 - [ ] Improve documentation and testing
 - [ ] Release and publish to PyPI
-  - [ ] Support [pipx](https://pipxproject.github.io/pipx/)
