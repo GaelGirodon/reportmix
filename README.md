@@ -8,8 +8,6 @@
 
 Merge reports from [multiple tools](#supported-reports) into a single file.
 
-> :warning: This tool is only in alpha stage, not safe for production usage!
-
 ## Install
 
 Install **ReportMix** from [PyPI](https://pypi.org/project/reportmix/):
@@ -123,31 +121,6 @@ Reports produced by the following tools are currently supported:
 - :heavy_check_mark: **Run ReportMix**
 
 > → [SonarQube loader](reportmix/loaders/sonarqube.py)
-
-## Development
-
-### Environment
-
-Create the virtual environment, install dependencies from `Pipfile`
-and activate the Pipenv shell:
-
-```shell
-export PIPENV_VENV_IN_PROJECT=1 # optional
-pipenv install
-pipenv shell
-```
-
-### Resources
-
-- [Basic Usage of Pipenv](https://docs.pipenv.org/en/latest/basics/)
-- [Tools for Writing Python CLI Applications](https://hackernoon.com/tools-for-writing-python-cli-applications-ba52db1e454f)
-- [argparse — Python 3 documentation](https://docs.python.org/3/library/argparse.html)
-- [configparser — Python 3 documentation](https://docs.python.org/3/library/configparser.html)
-- [csv — Python 3 documentation](https://docs.python.org/3/library/csv.html)
-- [logging — Python 3 documentation](https://docs.python.org/3/howto/logging.html)
-- [A sample Python project](https://github.com/pypa/sampleproject)
-- [Cowsay](https://github.com/VaasuDevanS/cowsay-python)
-- [twine · PyPI](https://pypi.org/project/twine/)
 
 ## License
 
