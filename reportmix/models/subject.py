@@ -1,9 +1,15 @@
+"""
+Subject model.
+"""
+
+
 class Subject:
     """
     A subject affected by an issue (feature, file, class, dependency, ...).
     """
 
-    def __init__(self, identifier: str, name: str, description: str, version: str, location: str, license: str):
+    def __init__(self, identifier: str, name: str, description: str, version: str,
+                 location: str, license: str):
         """
         Initialize a subject affected by an issue.
         :param identifier: Subject unique identifier (file path, fully qualified name, hash, ...)

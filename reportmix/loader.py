@@ -1,3 +1,7 @@
+"""
+Report loader parent class.
+"""
+
 from typing import List, Dict
 
 from reportmix.models.issue import Issue

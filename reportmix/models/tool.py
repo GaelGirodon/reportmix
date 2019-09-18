@@ -1,3 +1,8 @@
+"""
+Tool model.
+"""
+
+
 class Tool:
     """
     A tool that scanned a project and found issues.

@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+"""
+Application main function.
+"""
+
 import sys
 
 from reportmix.config.builder import ConfigBuilder
@@ -8,7 +12,9 @@ from reportmix.mixer import ReportMixer
 
 
 def main():
-    """Entry point for the application script"""
+    """
+    Entry point for the application script.
+    """
 
     # Load configuration
     try:

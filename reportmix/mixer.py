@@ -1,3 +1,7 @@
+"""
+Main class.
+"""
+
 import logging
 from os import path
 from typing import Dict, Union, List
@@ -43,7 +47,7 @@ class ReportMixer:
         """
         # Load and merge
         issues = self._load()
-        if len(issues) == 0:
+        if not issues:
             logging.warning("No issues to export, exiting")
             raise AppError()
         # Export
@@ -89,6 +93,7 @@ class ReportMixer:
         # Exporter
         for output_format in self.config["formats"].split(","):
             output_file_path = path.join(output_dir, "reportmix." + output_format)
-            logging.debug("Exporting merged report (format: %s, fields: [%s])", output_format, ", ".join(fields))
+            logging.debug("Exporting merged report (format: %s, fields: [%s])",
+                          output_format, ", ".join(fields))
             self.exporters[output_format].export(output_file_path, issues, fields)
             logging.info("Merged report exported: %s", output_file_path)

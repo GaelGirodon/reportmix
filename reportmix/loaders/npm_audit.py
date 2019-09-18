@@ -1,3 +1,7 @@
+"""
+npm audit report loader.
+"""
+
 import json
 import logging
 from datetime import datetime
@@ -13,7 +17,7 @@ from reportmix.models.subject import Subject
 from reportmix.models.tool import Tool
 
 # Configuration properties
-properties: List[ConfigProperty] = [
+PROPERTIES: List[ConfigProperty] = [
     ConfigProperty("report_file", "path to the report file", True, "npm-audit.json")
 ]
 
@@ -39,38 +43,38 @@ class NpmAuditLoader(Loader):
                 report = json.load(report_file)
                 advisories = report["advisories"]
                 issues = []
-                for number, a in advisories.items():
-                    for f in a["findings"]:
+                for number, adv in advisories.items():
+                    for finding in adv["findings"]:
                         issues.append(Issue(
-                            ref=a["id"],
-                            identifier=", ".join(a["cves"]) or a["title"],
-                            name=a["title"],
+                            ref=adv["id"] or number,
+                            identifier=", ".join(adv["cves"]) or adv["title"],
+                            name=adv["title"],
                             type="VULNERABILITY",
-                            category=a["cwe"],
-                            description=a["overview"],
+                            category=adv["cwe"],
+                            description=adv["overview"],
                             more="",
-                            action=a["recommendation"],
+                            action=adv["recommendation"],
                             effort="",
                             analysis_date=None,
-                            severity=severity.guess(a["severity"]),
+                            severity=severity.guess(adv["severity"]),
                             score="",
                             confidence="",
-                            evidences=len(a["findings"]),
+                            evidences=len(adv["findings"]),
                             source="NPM Public Advisories",
-                            source_date=datetime.strptime(a["created"], "%Y-%m-%dT%H:%M:%S.%fZ"),
-                            url=a["url"],
+                            source_date=datetime.strptime(adv["created"], "%Y-%m-%dT%H:%M:%S.%fZ"),
+                            url=adv["url"],
                             tool=Tool(
                                 identifier="npm_audit",
                                 name="npm audit",
                                 version=""
                             ),
                             subject=Subject(
-                                identifier=a["module_name"],
-                                name=a["module_name"],
+                                identifier=adv["module_name"],
+                                name=adv["module_name"],
                                 description="",
                                 version="Vulnerable versions: {}, Patched versions: {}".format(
-                                    a["vulnerable_versions"], a["patched_versions"]),
-                                location=f["paths"][0] if len(f["paths"]) > 0 else "",
+                                    adv["vulnerable_versions"], adv["patched_versions"]),
+                                location=finding["paths"][0] if finding["paths"] else "",
                                 license=""
                             ),
                             project=Project(

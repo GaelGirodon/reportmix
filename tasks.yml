@@ -25,6 +25,15 @@ healthcheck:
   shell: powershell
   script: ./scripts/Invoke-HealthCheck.ps1
 
+# Run pylint and update score in README.md
+lint:
+  script:
+    - pipenv run pylint reportmix reportmix.py tests setup.py --exit-zero | tee -a .pylint
+    - score=`grep -oP "(?<=rated at )([0-9.]+)" .pylint`
+    - 'echo "Score: $score"'
+    - if [ ! -z "$score" ]; then sed -i -E "8s/pylint-([0-9.]+)-success/pylint-${score}-success/g" README.md; fi
+    - rm .pylint
+
 # Build package
 package:
   script:
@@ -61,4 +70,4 @@ release:
 
 # Clean dist
 clean:
-  script: rm -r build dist *.egg-info || true
+  script: rm -r build dist *.egg-info .pytest_cache || true

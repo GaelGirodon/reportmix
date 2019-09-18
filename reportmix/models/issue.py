@@ -1,3 +1,7 @@
+"""
+Main issue model.
+"""
+
 import inspect
 from datetime import datetime
 from typing import Dict, Union, Optional
@@ -17,10 +21,11 @@ class Issue:
     An issue extracted from a report.
     """
 
-    def __init__(self, ref: str, identifier: str, name: str, type: str, category: str, description: str, more: str,
-                 action: str, effort: str, analysis_date: Optional[datetime], severity: Severity, score: str,
-                 confidence: str, evidences: int, source: str, source_date: Optional[datetime], url: str,
-                 tool: Tool, subject: Subject, project: Project, meta: Meta = None):
+    def __init__(self, ref: str, identifier: str, name: str, type: str, category: str,
+                 description: str, more: str, action: str, effort: str,
+                 analysis_date: Optional[datetime], severity: Severity, score: str,
+                 confidence: str, evidences: int, source: str, source_date: Optional[datetime],
+                 url: str, tool: Tool, subject: Subject, project: Project, meta: Meta = None):
         """
         Initialize an issue reported by a tool about a subject in a project.
         :param ref: Issue technical reference/identifier
@@ -68,12 +73,16 @@ class Issue:
         self.meta = meta
 
     def to_dict(self) -> Dict:
-        d = vars(self).copy()
-        d["tool"] = vars(self.tool).copy()
-        d["subject"] = vars(self.subject).copy()
-        d["project"] = vars(self.project).copy()
-        d["meta"] = vars(self.meta).copy()
-        return d
+        """
+        Map the issue to a dictionary (deep mapping).
+        :return: The issue as a dictionary
+        """
+        issue = vars(self).copy()
+        issue["tool"] = vars(self.tool).copy()
+        issue["subject"] = vars(self.subject).copy()
+        issue["project"] = vars(self.project).copy()
+        issue["meta"] = vars(self.meta).copy()
+        return issue
 
     def flatten(self, sub_sep: str = "_") -> FlatIssue:
         """

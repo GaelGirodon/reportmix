@@ -1,3 +1,7 @@
+"""
+HTML report exporter.
+"""
+
 from collections import OrderedDict
 from typing import List
 
@@ -28,22 +32,25 @@ class HtmlExporter(Exporter):
         # Prepare templates values and statistics
         # Issues by tool
         tools = OrderedDict()
-        for t in sorted(set([i.tool.name for i in issues]), key=lambda tool_name: tool_name.casefold()):
-            tools[t] = len([i for i in issues if i.tool.name == t])
+        tool_names = sorted({i.tool.name for i in issues},
+                            key=lambda tool_name: tool_name.casefold())
+        for tool in tool_names:
+            tools[tool] = len([i for i in issues if i.tool.name == tool])
         # Issues by severity
         severities = OrderedDict()
-        for s in SEVERITIES:
-            severities[s.name] = len([i for i in issues if i.severity == s])
+        for severity in SEVERITIES:
+            severities[severity.name] = len([i for i in issues if i.severity == severity])
         # Issues by type
         types = OrderedDict()
-        for t in sorted(set([i.type for i in issues]), key=lambda type: type.casefold()):
-            types[t] = len([i for i in issues if i.type == t])
+        type_names = sorted({i.type for i in issues}, key=lambda t: t.casefold())
+        for tool in type_names:
+            types[tool] = len([i for i in issues if i.type == tool])
         # Render and write report
-        with open(output_file, "wb") as output_file:
+        with open(output_file, "wb") as file:
             output = template.render(title="Issues Report", logo=self.config["logo"],
                                      issues=[i.flatten() for i in issues], fields=fields,
                                      tools=tools, severities=severities, types=types)
-            output_file.write(output.encode("utf-8"))
+            file.write(output.encode("utf-8"))
 
 
 #
@@ -63,8 +70,8 @@ def limit(value, max_length: int = 64) -> str:
     val = str(value) if value else ""
     if len(val) <= max_length:
         return val
-    else:
-        return '<span title="{}">{}</span>'.format(val, val[:max_length] + "...")
+    # else
+    return '<span title="{}">{}</span>'.format(val, val[:max_length] + "...")
 
 
 def pretty_field(value: str) -> str:

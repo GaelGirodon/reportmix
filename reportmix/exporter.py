@@ -1,3 +1,7 @@
+"""
+Report exporter parent class.
+"""
+
 from typing import List, Dict
 
 from reportmix.models.issue import Issue
@@ -23,4 +27,3 @@ class Exporter:
         :param issues: List of issues to write.
         :param fields: List of fields to include in the output report.
         """
-        pass

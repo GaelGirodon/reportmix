@@ -1,3 +1,8 @@
+"""
+Project model.
+"""
+
+
 class Project:
     """
     A scanned project.

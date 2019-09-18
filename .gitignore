@@ -40,6 +40,9 @@ MANIFEST
 # Pytest
 test-results.xml
 
+# Pylint
+.pylint
+
 # Project
 /tmp
 /.reportmix

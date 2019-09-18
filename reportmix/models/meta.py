@@ -1,3 +1,7 @@
+"""
+Metadata model.
+"""
+
 from typing import List
 
 from reportmix.config.property import ConfigProperty
@@ -23,7 +27,7 @@ class Meta:
 
 
 # Metadata configuration properties
-properties: List[ConfigProperty] = [
+PROPERTIES: List[ConfigProperty] = [
     ConfigProperty("product", "the product name"),
     ConfigProperty("version", "the product version"),
     ConfigProperty("company", "the company name"),

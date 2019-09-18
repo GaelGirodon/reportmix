@@ -1,19 +1,23 @@
+"""
+ReportMix setup file.
+"""
+
 from io import open
 from os import path
 
 from setuptools import setup, find_packages
 
-here = path.abspath(path.dirname(__file__))
+HERE = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+with open(path.join(HERE, 'README.md'), encoding='utf-8') as f:
+    LONG_DESCRIPTION = f.read()
 
 setup(
     name='reportmix',
     version='0.1.1',
     description='Merge reports from multiple tools into a single file',
-    long_description=long_description,
+    long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
     url='https://github.com/GaelGirodon/reportmix',
     author='Gael Girodon',

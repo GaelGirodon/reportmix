@@ -1,3 +1,7 @@
+"""
+CSV report exporter.
+"""
+
 import csv
 from typing import List
 
@@ -11,8 +15,8 @@ class CsvExporter(Exporter):
     """
 
     def export(self, output_file: str, issues: List[Issue], fields: List[str]):
-        with open(output_file, "w", newline='', encoding='utf-8') as output_file:
-            writer = csv.DictWriter(output_file, fieldnames=fields, extrasaction='ignore',
+        with open(output_file, "w", newline='', encoding='utf-8') as file:
+            writer = csv.DictWriter(file, fieldnames=fields, extrasaction='ignore',
                                     delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             writer.writeheader()
             for issue in issues:

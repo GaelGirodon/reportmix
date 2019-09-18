@@ -1,3 +1,7 @@
+"""
+JSON report exporter.
+"""
+
 import json
 from typing import List
 
@@ -11,5 +15,5 @@ class JsonExporter(Exporter):
     """
 
     def export(self, output_file: str, issues: List[Issue], fields: List[str]):
-        with open(output_file, "w") as output_file:
-            json.dump([i.to_dict() for i in issues], output_file, default=str)
+        with open(output_file, "w") as file:
+            json.dump([i.to_dict() for i in issues], file, default=str)

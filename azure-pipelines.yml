@@ -44,3 +44,6 @@ stages:
             condition: succeededOrFailed()
             inputs:
               testResultsFiles: test-results.xml
+
+          - script: pipenv run pylint reportmix reportmix.py tests setup.py --exit-zero
+            displayName: 'Lint'

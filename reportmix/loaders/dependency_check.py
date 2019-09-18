@@ -1,3 +1,7 @@
+"""
+Dependency-Check report loader.
+"""
+
 import csv
 import logging
 from datetime import datetime
@@ -13,14 +17,14 @@ from reportmix.models.subject import Subject
 from reportmix.models.tool import Tool
 
 # Configuration properties
-properties: List[ConfigProperty] = [
+PROPERTIES: List[ConfigProperty] = [
     ConfigProperty("report_file", "path to the report file", False, "dependency-check-report.csv")
 ]
 
 
 class DependencyCheckLoader(Loader):
     """
-    Dependency Check report loader (CSV format only).
+    Dependency-Check report loader (CSV format only).
     """
 
     def load(self) -> List[Issue]:
@@ -49,7 +53,9 @@ class DependencyCheckLoader(Loader):
                         more="",
                         action="",
                         effort="",
-                        analysis_date=datetime.strptime(row["ScanDate"][:24], "%a, %d %b %Y %H:%M:%S"),
+                        # TODO Improve date parsing
+                        analysis_date=datetime.strptime(row["ScanDate"][:24],
+                                                        "%a, %d %b %Y %H:%M:%S"),
                         severity=severity.guess(row["CVSSv3_BaseSeverity"]),
                         score=row["CVSSv3"],
                         confidence=row["CPE Confidence"],
