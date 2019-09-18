@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Application main function.
+Application main function and version.
 """
 
 import sys
@@ -9,6 +9,8 @@ import sys
 from reportmix.config.builder import ConfigBuilder
 from reportmix.errors import AppError
 from reportmix.mixer import ReportMixer
+
+__version__ = "0.1.1"
 
 
 def main():
@@ -18,7 +20,7 @@ def main():
 
     # Load configuration
     try:
-        config = ConfigBuilder().build()
+        config = ConfigBuilder(__version__).build()
     except AppError:
         sys.exit(1)
 

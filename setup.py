@@ -2,22 +2,41 @@
 ReportMix setup file.
 """
 
+import re
 from io import open
 from os import path
 
 from setuptools import setup, find_packages
 
-HERE = path.abspath(path.dirname(__file__))
+DIR = path.abspath(path.dirname(__file__))
 
-# Get the long description from the README file
-with open(path.join(HERE, 'README.md'), encoding='utf-8') as f:
-    LONG_DESCRIPTION = f.read()
+
+def get_long_description() -> str:
+    """
+    Get the long description from the README.md file.
+    :return: Long description
+    """
+    with open(path.join(DIR, 'README.md'), encoding='utf-8') as file:
+        return file.read()
+
+
+def get_version() -> str:
+    """
+    Get the version number from reportmix/main.py.
+    :return: Version number
+    """
+    main_file = path.join(DIR, 'reportmix', 'main.py')
+    version_re = re.compile(r'__version__\s+=\s+"(?P<version>.*)"')
+    with open(main_file, 'r', encoding='utf-8') as file:
+        match = version_re.search(file.read())
+        return match.group('version') if match is not None else 'unknown'
+
 
 setup(
     name='reportmix',
-    version='0.1.1',
+    version=get_version(),
     description='Merge reports from multiple tools into a single file',
-    long_description=LONG_DESCRIPTION,
+    long_description=get_long_description(),
     long_description_content_type='text/markdown',
     url='https://github.com/GaelGirodon/reportmix',
     author='Gael Girodon',
@@ -36,8 +55,8 @@ setup(
     include_package_data=True,
     python_requires='>=3.7',
     install_requires=[
-        "requests>=2.22.0",
-        "jinja2>=2.10.1"
+        'requests>=2.22.0',
+        'jinja2>=2.10.1'
     ],
     entry_points={
         'console_scripts': [

@@ -33,7 +33,12 @@ class ConfigBuilder:
     Build the configuration from the configuration file and command-line arguments.
     """
 
-    def __init__(self):
+    def __init__(self, version: str):
+        """
+        Initialize the configuration builder.
+        :param version: Application version number
+        """
+
         # Configuration properties
         self.properties = {
             GLOBAL_CONFIG: PROPERTIES,
@@ -46,6 +51,8 @@ class ConfigBuilder:
         # Initialize the command-line argument parser
         self.parser = argparse.ArgumentParser(
             description='Merge reports from multiple tools into one single file.')
+        self.parser.add_argument("-V", "--version", action="version",
+                                 version="ReportMix " + version)
         self.parser.add_argument("-v", "--verbose", action="store_true",
                                  help="run verbosely (display DEBUG logging)")
 

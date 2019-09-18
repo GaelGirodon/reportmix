@@ -5,7 +5,7 @@
 [![Python version](https://img.shields.io/pypi/pyversions/reportmix?style=flat-square)](https://pypi.org/project/reportmix/)
 [![Build](https://img.shields.io/azure-devops/build/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
 [![Tests](https://img.shields.io/azure-devops/tests/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
-[![Pylint](https://img.shields.io/badge/pylint-9.32-success?style=flat-square)](tasks.yml#L28)
+[![Pylint](https://img.shields.io/badge/pylint-9.33-success?style=flat-square)](tasks.yml#L28)
 
 Merge reports from [multiple tools](#supported-reports) into a single file.
 
@@ -29,8 +29,9 @@ reportmix
 
 | Argument                    | Description                                                | Default value |
 | --------------------------- | ---------------------------------------------------------- | ------------- |
-| `--help`                    | Show the help message and exit                             |               |
-| `--verbose`                 | Run verbosely (display `DEBUG` logging)                    |               |
+| `-h`, `--help`              | Show the help message and exit                             |               |
+| `-V`, `--version`           | Show program's version number and exit                     |               |
+| `-v`, `--verbose`           | Run verbosely (display `DEBUG` logging)                    |               |
 | `--output_dir OUTPUT_DIR`   | The location to write the report                           | `./`          |
 | `--config_file CONFIG_FILE` | The path to the configuration file                         | `.reportmix`  |
 | `--formats FORMATS`         | Report formats to be generated (`csv`, `json`, `html`)     | `html`        |

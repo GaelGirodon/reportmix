@@ -6,6 +6,7 @@
 
 $commands = @(
     "--help",
+    "--version",
     "",
     "--formats csv,html,json"
 )
