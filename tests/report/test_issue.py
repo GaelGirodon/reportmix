@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from reportmix.models.issue import Issue, FIELDS, FLAT_FIELDS
+from reportmix.models.meta import Meta
 from reportmix.models.project import Project
 from reportmix.models.severity import SEVERITIES
 from reportmix.models.subject import Subject
@@ -15,7 +16,8 @@ issue = Issue("ref", "identifier", "name", "type", "category", "description", "m
               None, SEVERITIES[1], "score", "confidence", 1, "source", None, "url",
               Tool("identifier", "name", "version"),
               Subject("identifier", "name", "description", "version", "location", "license"),
-              Project("identifier", "name", "version"))
+              Project("identifier", "name", "version"),
+              Meta("product", "version", "company", "customer"))
 dict_issue = {"ref": "ref", "identifier": "identifier", "name": "name", "type": "type", "category": "category",
               "description": "description", "more": "more", "action": "action", "effort": "effort",
               "analysis_date": None, "severity": SEVERITIES[1], "score": "score", "confidence": "confidence",
@@ -27,6 +29,9 @@ dict_issue = {"ref": "ref", "identifier": "identifier", "name": "name", "type": 
               },
               "project": {
                   "identifier": "identifier", "name": "name", "version": "version"
+              },
+              "meta": {
+                  "product": "product", "version": "version", "company": "company", "customer": "customer"
               }}
 flat_issue = {"ref": "ref", "identifier": "identifier", "name": "name", "type": "type", "category": "category",
               "description": "description", "more": "more", "action": "action", "effort": "effort",
@@ -35,7 +40,9 @@ flat_issue = {"ref": "ref", "identifier": "identifier", "name": "name", "type": 
               "tool_identifier": "identifier", "tool_name": "name", "tool_version": "version",
               "subject_identifier": "identifier", "subject_name": "name", "subject_description": "description",
               "subject_version": "version", "subject_location": "location", "subject_license": "license",
-              "project_identifier": "identifier", "project_name": "name", "project_version": "version"
+              "project_identifier": "identifier", "project_name": "name", "project_version": "version",
+              "meta_product": "product", "meta_version": "version", "meta_company": "company",
+              "meta_customer": "customer"
               }
 
 

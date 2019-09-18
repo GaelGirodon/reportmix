@@ -8,6 +8,7 @@ from typing import Union, Dict
 from reportmix.config.property import ConfigProperty
 from reportmix.errors import AppError
 from reportmix.loaders import dependency_check, sonarqube, npm_audit
+from reportmix.models import meta
 
 # Configuration global group name (for global configuration properties)
 GLOBAL_CONFIG = "global"
@@ -30,6 +31,7 @@ class ConfigBuilder:
                                "^((\\w+),)*(\\w+)$"),
                 ConfigProperty("logo", "the URL to the company logo to display on the HTML report", False)
             ],
+            "meta": meta.properties,
             "dependency_check": dependency_check.properties,
             "npm_audit": npm_audit.properties,
             "sonarqube": sonarqube.properties

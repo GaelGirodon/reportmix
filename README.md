@@ -35,6 +35,7 @@ reportmix
 | `--formats FORMATS`         | Report formats to be generated (`csv`, `json`, `html`)     | `html`        |
 | `--fields FIELDS`           | Fields to include in the output report (CSV and HTML only) | _all_         |
 | `--logo LOGO`               | The URL to the company logo to display on the HTML report  |               |
+| `--meta.*`                  | User-defined metadata fields                               | _empty_       |
 
 Run `reportmix --help` to show the full help message.
 
@@ -46,8 +47,8 @@ and [below](#supported-reports).
 
 ## Configuration
 
-Configure the merging process using command-line arguments
-or create a configuration file `.reportmix` in the working directory:
+Configure the merging process using **command-line arguments**
+or create a **configuration file** `.reportmix` in the working directory:
 
 ```ini
 [global]
@@ -55,6 +56,9 @@ output_dir=target
 formats=html,csv,json
 fields=tool_name,tool_version,name,description,type,severity,subject_name
 logo=http://acme.com/img/logo.png
+
+[meta]
+company=Acme Corporation
 
 [dependency_check]
 report_file=target/dependency-check-report.csv
@@ -67,14 +71,24 @@ host_url=http://sonarqube.acme.corp
 project_key=acme:myproject
 ```
 
-This configuration can also be passed as command-line arguments:
+This configuration can also be passed as **command-line arguments**:
 
 ```shell
 reportmix --output_dir target --formats "html,csv,json" \
+    meta.company "Acme Corporation"
     dependency_check.report_file "target/dependency-check-report.csv" \
     npm_audit.report_file "web-app/npm-audit.json" \
     sonarqube.host_url "http://sonarqube.acme.corp" sonarqube.project_key "acme:myproject"
 ```
+
+**Metadata fields** allows to define some fields for each issue in the configuration:
+
+| Name       | Description         |
+| ---------- | ------------------- |
+| `product`  | The product name    |
+| `version`  | The product version |
+| `company`  | The company name    |
+| `customer` | The customer name   |
 
 ## Supported reports
 

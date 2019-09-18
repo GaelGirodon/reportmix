@@ -9,7 +9,7 @@
   - [ ] SonarQube:
     - [ ] Default `project_key` to `<groupId>:<artifactId>` for Maven projects
 - [ ] Improve export formats
-   - [ ] Allow to override the value of some fields (e.g. `version`, `application`, ...)
+   - [ ] Add field names customization
    - [ ] Add a header with a summary table in the HTML report
 - [ ] Improve configuration and CLI
 - [ ] Improve documentation and testing

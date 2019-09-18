@@ -11,6 +11,7 @@ from reportmix.loaders.dependency_check import DependencyCheckLoader
 from reportmix.loaders.npm_audit import NpmAuditLoader
 from reportmix.loaders.sonarqube import SonarQubeLoader
 from reportmix.models.issue import FLAT_FIELDS, Issue
+from reportmix.models.meta import Meta
 
 
 class ReportMixer:
@@ -24,6 +25,7 @@ class ReportMixer:
         :param config: Configuration.
         """
         self.config = config[GLOBAL_CONFIG]
+        self.meta_config = config["meta"]
         self.loaders = {
             "dependency_check": DependencyCheckLoader(config["dependency_check"]),
             "npm_audit": NpmAuditLoader(config["npm_audit"]),
@@ -49,22 +51,28 @@ class ReportMixer:
 
     def _load(self) -> List[Issue]:
         """
-        Load and merge issues from all loaders
+        Load and merge issues from all loaders.
+        Set metadata fields from configuration.
         :return: List of issues
         """
+        # Load and merge
         issues = []
         logging.info("Merge reports: %s", ", ".join(self.loaders.keys()))
         for name, loader in self.loaders.items():
             logging.info("Loading %s report", name)
             issues.extend(loader.load())
         logging.info("Loaded %d issue(s)", len(issues))
+        # Set metadata fields
+        meta = Meta(self.meta_config["product"], self.meta_config["version"],
+                    self.meta_config["company"], self.meta_config["customer"])
+        for issue in issues:
+            issue.meta = meta
         return issues
 
     def _export(self, issues: List[Issue]):
         """
         Export a list of issues to a report file.
         """
-
         # File
         output_dir: str = path.realpath(self.config["output_dir"])
         if not path.exists(output_dir) or not path.isdir(output_dir):

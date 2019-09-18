@@ -2,6 +2,7 @@ import inspect
 from datetime import datetime
 from typing import Dict, Union, Optional
 
+from reportmix.models.meta import Meta
 from reportmix.models.project import Project
 from reportmix.models.severity import Severity
 from reportmix.models.subject import Subject
@@ -19,7 +20,7 @@ class Issue:
     def __init__(self, ref: str, identifier: str, name: str, type: str, category: str, description: str, more: str,
                  action: str, effort: str, analysis_date: Optional[datetime], severity: Severity, score: str,
                  confidence: str, evidences: int, source: str, source_date: Optional[datetime], url: str,
-                 tool: Tool, subject: Subject, project: Project):
+                 tool: Tool, subject: Subject, project: Project, meta: Meta = None):
         """
         Initialize an issue reported by a tool about a subject in a project.
         :param ref: Issue technical reference/identifier
@@ -42,6 +43,7 @@ class Issue:
         :param tool: Scan tool
         :param subject: Subject (application feature, file, dependency, etc.) affected by the issue
         :param project: Project affected by the issue
+        :param meta: User-defined metadata
         """
         self.ref = ref
         self.identifier = identifier
@@ -63,12 +65,14 @@ class Issue:
         self.tool = tool
         self.subject = subject
         self.project = project
+        self.meta = meta
 
     def to_dict(self) -> Dict:
         d = vars(self).copy()
         d["tool"] = vars(self.tool).copy()
         d["subject"] = vars(self.subject).copy()
         d["project"] = vars(self.project).copy()
+        d["meta"] = vars(self.meta).copy()
         return d
 
     def flatten(self, sub_sep: str = "_") -> FlatIssue:
@@ -82,7 +86,7 @@ class Issue:
         """
         dict_issue = self.to_dict()
         result = dict_issue.copy()
-        for key in ["tool", "subject", "project"]:  # Sub-dictionaries
+        for key in ["tool", "subject", "project", "meta"]:  # Sub-dictionaries
             for sub_key in dict_issue[key].keys():
                 result[key + sub_sep + sub_key] = dict_issue[key][sub_key]
             result.pop(key)
@@ -97,7 +101,8 @@ class Issue:
 FIELDS = inspect.getfullargspec(Issue.__init__).args[1:]
 
 # The list of issue fields after flattening
-FLAT_FIELDS = [f for f in FIELDS if f not in ["tool", "subject", "project"]]
+FLAT_FIELDS = [f for f in FIELDS if f not in ["tool", "subject", "project", "meta"]]
 FLAT_FIELDS.extend(["tool_" + f for f in inspect.getfullargspec(Tool.__init__).args[1:]])
 FLAT_FIELDS.extend(["subject_" + f for f in inspect.getfullargspec(Subject.__init__).args[1:]])
 FLAT_FIELDS.extend(["project_" + f for f in inspect.getfullargspec(Project.__init__).args[1:]])
+FLAT_FIELDS.extend(["meta_" + f for f in inspect.getfullargspec(Meta.__init__).args[1:]])

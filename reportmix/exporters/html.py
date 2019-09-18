@@ -60,7 +60,7 @@ def limit(value, max_length: int = 64) -> str:
     :param max_length: Maximum string length (number of characters)
     :return: The output HTML code
     """
-    val = str(value)
+    val = str(value) if value else ""
     if len(val) <= max_length:
         return val
     else:
@@ -70,8 +70,8 @@ def limit(value, max_length: int = 64) -> str:
 def pretty_field(value: str) -> str:
     """
     Format a snake_case field for display (snake_case -> Snake case)
-    and make some other adjustments (identifier => id).
+    and make some other adjustments (identifier => id, remove meta_).
     :param value: Raw field name
     :return: Field to display
     """
-    return value.capitalize().replace("_", " ").replace("identifier", "id")
+    return value.replace("meta_", "").capitalize().replace("_", " ").replace("identifier", "id")
