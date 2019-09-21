@@ -3,7 +3,6 @@
 - [ ] Improve loaders
   - [ ] Support more tools / report formats (Checkmarx, ...)
   - [ ] Improve existing loaders (mapping)
-    - [ ] Improve datetime parsing
   - [ ] Allow to enable only some tools (`--tools "dependency_check,sonarqube"`)
   - [ ] Dependency Check:
     - [ ] Use JSON report instead of CSV

@@ -61,7 +61,7 @@ class NpmAuditLoader(Loader):
                             confidence="",
                             evidences=len(adv["findings"]),
                             source="NPM Public Advisories",
-                            source_date=datetime.strptime(adv["created"], "%Y-%m-%dT%H:%M:%S.%fZ"),
+                            source_date=datetime.strptime(adv["created"][:19], "%Y-%m-%dT%H:%M:%S"),
                             url=adv["url"],
                             tool=Tool(
                                 identifier="npm_audit",
