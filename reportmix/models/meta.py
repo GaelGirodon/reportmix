@@ -27,7 +27,8 @@ class Meta:
         self.version = version
         self.organization = organization
         self.client = client
-        self.audit_date = audit_date or str(datetime.now().replace(microsecond=0))
+        self.audit_date = audit_date if audit_date and audit_date != "now()" \
+            else str(datetime.now().replace(microsecond=0))
 
 
 # Metadata configuration properties

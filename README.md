@@ -77,7 +77,8 @@ This configuration can also be passed as **command-line arguments**:
 
 ```shell
 reportmix --output_dir target --formats "html,csv,json" \
-    --meta.organization "Acme Corporation"
+    --fields [...] --logo "http://acme.com/img/logo.png" \
+    --meta.organization "Acme Corporation" \
     --dependency_check.report_file "target/dependency-check-report.csv" \
     --npm_audit.report_file "web-app/npm-audit.json" \
     --sonarqube.host_url "http://sonarqube.acme.corp" --sonarqube.project_key "acme:myproject"
