@@ -60,9 +60,9 @@ release:
     - VERSION
   script:
     - 'echo "Version: $env:VERSION"'
-    - 'if ((Get-Content -Raw .\setup.py) -notlike "*$env:VERSION*") { echo "Update setup.py"; exit 1; }'
+    - 'if ((Get-Content -Raw ./reportmix/main.py) -notlike "*$env:VERSION*") { echo "Update main.py"; exit 1; }'
     - 'try { Invoke-WebRequest "$env:PYPI_PROJECT/$env:VERSION/" -Method HEAD | Out-Null } catch { echo "Publish to PyPI" ; exit 2; }'
-    - 'if ((Get-Content -Raw .\CHANGELOG.md) -notlike "*$env:VERSION*") { echo "Update CHANGELOG.md"; exit 3; }'
+    - 'if ((Get-Content -Raw ./CHANGELOG.md) -notlike "*$env:VERSION*") { echo "Update CHANGELOG.md"; exit 3; }'
     - git add .
     - git commit -m "Release $env:VERSION"
     - git tag -a "$env:VERSION" -m "$env:VERSION"

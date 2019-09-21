@@ -10,7 +10,7 @@ from reportmix.config.builder import ConfigBuilder
 from reportmix.errors import AppError
 from reportmix.mixer import ReportMixer
 
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 
 
 def main():
