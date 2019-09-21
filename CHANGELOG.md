@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.3.0 - 2019-09-21
+
+- Improve metadata fields
+- Improve date mapping
+
 ## 0.2.0 - 2019-09-21
 
 - Add metadata fields
