@@ -21,7 +21,7 @@ ISSUE = Issue("ref", "identifier", "name", "type", "category", "description", "m
               Tool("identifier", "name", "version"),
               Subject("identifier", "name", "description", "version", "location", "license"),
               Project("identifier", "name", "version"),
-              Meta("product", "version", "company", "customer"))
+              Meta("product", "version", "company", "customer", str(NOW)))
 ISSUE_DICT = {"ref": "ref", "identifier": "identifier", "name": "name", "type": "type",
               "category": "category", "description": "description", "more": "more",
               "action": "action", "effort": "effort", "analysis_date": None,
@@ -37,7 +37,7 @@ ISSUE_DICT = {"ref": "ref", "identifier": "identifier", "name": "name", "type": 
               },
               "meta": {
                   "product": "product", "version": "version", "company": "company",
-                  "customer": "customer"
+                  "customer": "customer", "audit_date": str(NOW)
               }}
 ISSUE_FLAT = {"ref": "ref", "identifier": "identifier", "name": "name", "type": "type",
               "category": "category", "description": "description", "more": "more",
@@ -50,7 +50,7 @@ ISSUE_FLAT = {"ref": "ref", "identifier": "identifier", "name": "name", "type": 
               "subject_location": "location", "subject_license": "license",
               "project_identifier": "identifier", "project_name": "name",
               "project_version": "version", "meta_product": "product", "meta_version": "version",
-              "meta_company": "company", "meta_customer": "customer"
+              "meta_company": "company", "meta_customer": "customer", "meta_audit_date": str(NOW)
               }
 
 

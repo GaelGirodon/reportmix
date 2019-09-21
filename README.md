@@ -5,7 +5,7 @@
 [![Python version](https://img.shields.io/pypi/pyversions/reportmix?style=flat-square)](https://pypi.org/project/reportmix/)
 [![Build](https://img.shields.io/azure-devops/build/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
 [![Tests](https://img.shields.io/azure-devops/tests/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
-[![Pylint](https://img.shields.io/badge/pylint-9.33-success?style=flat-square)](tasks.yml#L28)
+[![Pylint](https://img.shields.io/badge/pylint-9.31-success?style=flat-square)](tasks.yml#L28)
 
 Merge reports from [multiple tools](#supported-reports) into a single file.
 
@@ -37,7 +37,7 @@ reportmix
 | `--formats FORMATS`         | Report formats to be generated (`csv`, `json`, `html`)     | `html`        |
 | `--fields FIELDS`           | Fields to include in the output report (CSV and HTML only) | _all_         |
 | `--logo LOGO`               | The URL to the company logo to display on the HTML report  |               |
-| `--meta.*`                  | User-defined metadata fields                               | _empty_       |
+| `--meta.*`                  | User-defined metadata fields                               |               |
 
 Run `reportmix --help` to show the full help message.
 
@@ -85,12 +85,13 @@ reportmix --output_dir target --formats "html,csv,json" \
 
 **Metadata fields** allows to define some fields for each issue in the configuration:
 
-| Name       | Description         |
-| ---------- | ------------------- |
-| `product`  | The product name    |
-| `version`  | The product version |
-| `company`  | The company name    |
-| `customer` | The customer name   |
+| Name          | Description         | Default value |
+| ------------- | ------------------- | ------------- |
+| `product`     | The product name    |               |
+| `version`     | The product version |               |
+| `company`     | The company name    |               |
+| `customer`    | The customer name   |               |
+| `audit_date`  | The audit date      | _`now()`_     |
 
 ## Supported reports
 
