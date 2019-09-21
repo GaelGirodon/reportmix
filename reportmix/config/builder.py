@@ -20,11 +20,11 @@ GLOBAL_CONFIG = "global"
 PROPERTIES = [
     ConfigProperty("output_dir", "the location to write the report", True, "./"),
     ConfigProperty("config_file", "the path to the configuration file", True, ".reportmix"),
-    ConfigProperty("formats", "Report formats to be generated (csv, html, json)",
+    ConfigProperty("formats", "report formats to be generated (csv, html, json)",
                    True, "html", "^((F),)*(F)$".replace("F", "csv|html|json")),
     ConfigProperty("fields", "fields to include in the output report (CSV and HTML only)",
                    True, "all", "^((\\w+),)*(\\w+)$"),
-    ConfigProperty("logo", "the URL to the company logo to display on the HTML report", False)
+    ConfigProperty("logo", "the URL to the organization logo to display on the HTML report", False)
 ]
 
 

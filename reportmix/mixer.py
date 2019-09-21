@@ -68,7 +68,7 @@ class ReportMixer:
         logging.info("Loaded %d issue(s)", len(issues))
         # Set metadata fields
         meta = Meta(self.meta_config["product"], self.meta_config["version"],
-                    self.meta_config["company"], self.meta_config["customer"],
+                    self.meta_config["organization"], self.meta_config["client"],
                     self.meta_config["audit_date"])
         for issue in issues:
             issue.meta = meta

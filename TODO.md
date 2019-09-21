@@ -11,6 +11,7 @@
 - [ ] Improve export formats
   - [ ] Add field names customization
   - [ ] Add a header with a summary table in the HTML report
+  - [ ] Improve metadata fields
 - [ ] Improve configuration and CLI
 - [ ] Improve documentation and testing
 - [ ] Release and publish to PyPI

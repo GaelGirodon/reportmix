@@ -36,7 +36,7 @@ reportmix
 | `--config_file CONFIG_FILE` | The path to the configuration file                         | `.reportmix`  |
 | `--formats FORMATS`         | Report formats to be generated (`csv`, `json`, `html`)     | `html`        |
 | `--fields FIELDS`           | Fields to include in the output report (CSV and HTML only) | _all_         |
-| `--logo LOGO`               | The URL to the company logo to display on the HTML report  |               |
+| `--logo LOGO`               | The URL to the organization logo to display on the HTML report  |               |
 | `--meta.*`                  | User-defined metadata fields                               |               |
 
 Run `reportmix --help` to show the full help message.
@@ -56,11 +56,11 @@ or create a **configuration file** `.reportmix` in the working directory:
 [global]
 output_dir=target
 formats=html,csv,json
-fields=tool_name,tool_version,name,description,type,severity,subject_name
+fields=tool_name,tool_version,meta_organization,name,description,type,severity,subject_name
 logo=http://acme.com/img/logo.png
 
 [meta]
-company=Acme Corporation
+organization=Acme Corporation
 
 [dependency_check]
 report_file=target/dependency-check-report.csv
@@ -77,7 +77,7 @@ This configuration can also be passed as **command-line arguments**:
 
 ```shell
 reportmix --output_dir target --formats "html,csv,json" \
-    --meta.company "Acme Corporation"
+    --meta.organization "Acme Corporation"
     --dependency_check.report_file "target/dependency-check-report.csv" \
     --npm_audit.report_file "web-app/npm-audit.json" \
     --sonarqube.host_url "http://sonarqube.acme.corp" --sonarqube.project_key "acme:myproject"
@@ -85,13 +85,13 @@ reportmix --output_dir target --formats "html,csv,json" \
 
 **Metadata fields** allows to define some fields for each issue in the configuration:
 
-| Name          | Description         | Default value |
-| ------------- | ------------------- | ------------- |
-| `product`     | The product name    |               |
-| `version`     | The product version |               |
-| `company`     | The company name    |               |
-| `customer`    | The customer name   |               |
-| `audit_date`  | The audit date      | _`now()`_     |
+| Name           | Description           | Default value |
+| -------------- | --------------------- | ------------- |
+| `product`      | The product name      |               |
+| `version`      | The product version   |               |
+| `organization` | The organization name |               |
+| `client`       | The client name       |               |
+| `audit_date`   | The audit date        | _`now()`_     |
 
 ## Supported reports
 
