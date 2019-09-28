@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.4.0 - 2019-09-28
+
+- Add the `hash` field
+- Add HTML report title customization
+- Improve the Dependency-Check loader
+
 ## 0.3.1 - 2019-09-21
 
 - Fix default value of `audit_date` metadata field
