@@ -37,6 +37,7 @@ reportmix
 | `--formats FORMATS`         | Report formats to be generated (`csv`, `json`, `html`)         |
 | `--fields FIELDS`           | Fields to include in the output report (CSV and HTML only)     |
 | `--hash HASH`               | Fields to use for hash generation                              |
+| `--title TITLE`             | The HTML report title                                          |
 | `--logo LOGO`               | The URL to the organization logo to display on the HTML report |
 | `--meta.*`                  | User-defined metadata fields                                   |
 
@@ -58,6 +59,7 @@ or create a **configuration file** `.reportmix` in the working directory:
 output_dir=target
 formats=html,csv,json
 fields=tool_name,tool_version,meta_organization,name,description,type,severity,subject_name
+title=Analysis report
 logo=http://acme.com/img/logo.png
 
 [meta]
@@ -78,7 +80,7 @@ This configuration can also be passed as **command-line arguments**:
 
 ```shell
 reportmix --output_dir target --formats "html,csv,json" \
-    --fields [...] --logo "http://acme.com/img/logo.png" \
+    --fields [...] --title "Analysis report" --logo "http://acme.com/img/logo.png" \
     --meta.organization "Acme Corporation" \
     --dependency_check.report_file "target/dependency-check-report.csv" \
     --npm_audit.report_file "web-app/npm-audit.json" \

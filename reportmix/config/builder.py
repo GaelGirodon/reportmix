@@ -24,9 +24,10 @@ PROPERTIES = [
     ConfigProperty("formats", "report formats to be generated (csv, html, json)",
                    True, "html", "^((F),)*(F)$".replace("F", "csv|html|json")),
     ConfigProperty("fields", "fields to include in the output report (CSV and HTML only)",
-                   True, "all", "^((\\w+),)*(\\w+)$"),
+                   True, "all", r"^((\w+),)*(\w+)$"),
     ConfigProperty("hash", "fields to use for hash generation",
-                   True, ",".join(HASH_FIELDS), "^((\\w+),)*(\\w+)$"),
+                   True, ",".join(HASH_FIELDS), r"^((\w+),)*(\w+)$"),
+    ConfigProperty("title", "the HTML report title", True, "Issues Report", "^.{1,64}$"),
     ConfigProperty("logo", "the URL to the organization logo to display on the HTML report", False)
 ]
 

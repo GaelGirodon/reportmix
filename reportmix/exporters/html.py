@@ -47,7 +47,7 @@ class HtmlExporter(Exporter):
             types[tool] = len([i for i in issues if i.type == tool])
         # Render and write report
         with open(output_file, "wb") as file:
-            output = template.render(title="Issues Report", logo=self.config["logo"],
+            output = template.render(title=self.config["title"], logo=self.config["logo"],
                                      issues=[i.flatten() for i in issues], fields=fields,
                                      tools=tools, severities=severities, types=types)
             file.write(output.encode("utf-8"))
