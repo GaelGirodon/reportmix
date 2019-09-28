@@ -2,9 +2,10 @@
 Main issue model.
 """
 
+import hashlib
 import inspect
 from datetime import datetime
-from typing import Dict, Union, Optional
+from typing import Dict, Union, Optional, List
 
 from reportmix.models.meta import Meta
 from reportmix.models.project import Project
@@ -25,7 +26,8 @@ class Issue:
                  description: str, more: str, action: str, effort: str,
                  analysis_date: Optional[datetime], severity: Severity, score: str,
                  confidence: str, evidences: int, source: str, source_date: Optional[datetime],
-                 url: str, tool: Tool, subject: Subject, project: Project, meta: Meta = None):
+                 url: str, tool: Tool, subject: Subject, project: Project, meta: Meta = None,
+                 hash: str = None):
         """
         Initialize an issue reported by a tool about a subject in a project.
         :param ref: Issue technical reference/identifier
@@ -49,6 +51,7 @@ class Issue:
         :param subject: Subject (application feature, file, dependency, etc.) affected by the issue
         :param project: Project affected by the issue
         :param meta: User-defined metadata
+        :param hash: Issue stable unique generated identifier
         """
         self.ref = ref
         self.identifier = identifier
@@ -71,6 +74,32 @@ class Issue:
         self.subject = subject
         self.project = project
         self.meta = meta
+        self.hash = hash
+
+    def get_field(self, name: str) -> Optional[Union[str, int, datetime, Severity]]:
+        """
+        Get the value of a field by name.
+        :param name: Name of the field from the FLAT_FIELDS list.
+        :return: The value of the field
+        """
+        field = name.split("_", 1)
+        # Sub-object
+        if len(field) == 2 and field[0] in ["tool", "subject", "project", "meta"]:
+            sub_obj = getattr(self, field[0])
+            return getattr(sub_obj, field[1])
+        # else: first-level field
+        return getattr(self, name)
+
+    def compute_hash(self, fields: List[str]) -> str:
+        """
+        Compute the issue unique identifier using the given fields.
+        :param fields: Names of the fields to use in hash
+        :return: The computed hash
+        """
+        if not fields:
+            return ""
+        raw_str = "".join([self.get_field(f) for f in fields])
+        return hashlib.md5(str.encode(raw_str)).hexdigest()
 
     def to_dict(self) -> Dict:
         """
@@ -81,7 +110,8 @@ class Issue:
         issue["tool"] = vars(self.tool).copy()
         issue["subject"] = vars(self.subject).copy()
         issue["project"] = vars(self.project).copy()
-        issue["meta"] = vars(self.meta).copy()
+        if self.meta:
+            issue["meta"] = vars(self.meta).copy()
         return issue
 
     def flatten(self, sub_sep: str = "_") -> FlatIssue:
@@ -96,9 +126,10 @@ class Issue:
         dict_issue = self.to_dict()
         result = dict_issue.copy()
         for key in ["tool", "subject", "project", "meta"]:  # Sub-dictionaries
-            for sub_key in dict_issue[key].keys():
-                result[key + sub_sep + sub_key] = dict_issue[key][sub_key]
-            result.pop(key)
+            if key in dict_issue and dict_issue[key]:
+                for sub_key in dict_issue[key].keys():
+                    result[key + sub_sep + sub_key] = dict_issue[key][sub_key]
+                result.pop(key)
         return result
 
 
@@ -115,3 +146,22 @@ FLAT_FIELDS.extend(["tool_" + f for f in inspect.getfullargspec(Tool.__init__).a
 FLAT_FIELDS.extend(["subject_" + f for f in inspect.getfullargspec(Subject.__init__).args[1:]])
 FLAT_FIELDS.extend(["project_" + f for f in inspect.getfullargspec(Project.__init__).args[1:]])
 FLAT_FIELDS.extend(["meta_" + f for f in inspect.getfullargspec(Meta.__init__).args[1:]])
+
+# Names of the default fields to use in hash generation
+HASH_FIELDS = ["tool_identifier", "subject_identifier", "identifier"]
+
+
+#
+# Utilities
+#
+
+def select_fields(fields: Union[str, List[str]]) -> List[str]:
+    """
+    Select a list of field names from the full list of fields.
+    :param fields: Field names list (as a list or a comma-separated string list)
+    :return: Intersection between the list of issue fields and the fields argument
+    """
+    only_fields = fields
+    if isinstance(fields, str):
+        only_fields = map(lambda f: f.strip(), fields.split(","))
+    return [f for f in only_fields if f in FLAT_FIELDS]

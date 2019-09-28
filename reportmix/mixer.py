@@ -14,7 +14,7 @@ from reportmix.exporters.json import JsonExporter
 from reportmix.loaders.dependency_check import DependencyCheckLoader
 from reportmix.loaders.npm_audit import NpmAuditLoader
 from reportmix.loaders.sonarqube import SonarQubeLoader
-from reportmix.models.issue import FLAT_FIELDS, Issue
+from reportmix.models.issue import FLAT_FIELDS, Issue, HASH_FIELDS, select_fields
 from reportmix.models.meta import Meta
 
 
@@ -67,16 +67,18 @@ class ReportMixer:
             issues.extend(loader.load())
         logging.info("Loaded %d issue(s)", len(issues))
         # Set metadata fields
-        meta = Meta(self.meta_config["product"], self.meta_config["version"],
-                    self.meta_config["organization"], self.meta_config["client"],
-                    self.meta_config["audit_date"])
+        hash_fields = select_fields(self.config["hash"] or HASH_FIELDS)
         for issue in issues:
-            issue.meta = meta
+            issue.meta = Meta(self.meta_config["product"], self.meta_config["version"],
+                              self.meta_config["organization"], self.meta_config["client"],
+                              self.meta_config["audit_date"])
+            issue.hash = issue.compute_hash(hash_fields)
         return issues
 
     def _export(self, issues: List[Issue]):
         """
         Export a list of issues to a report file.
+        :param issues: Issues to export
         """
         # File
         output_dir: str = path.realpath(self.config["output_dir"])
@@ -85,11 +87,8 @@ class ReportMixer:
             raise AppError()
 
         # Fields (intersection between all fields and selected fields)
-        fields = FLAT_FIELDS
         only_fields = self.config["fields"].lower()
-        if only_fields and only_fields != "all":
-            only_fields_list = map(lambda f: f.strip(), self.config["fields"].split(","))
-            fields = [f for f in only_fields_list if f in fields]
+        fields = FLAT_FIELDS if only_fields == "all" else select_fields(only_fields)
 
         # Exporter
         for output_format in self.config["formats"].split(","):

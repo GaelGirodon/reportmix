@@ -5,7 +5,7 @@
 [![Python version](https://img.shields.io/pypi/pyversions/reportmix?style=flat-square)](https://pypi.org/project/reportmix/)
 [![Build](https://img.shields.io/azure-devops/build/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
 [![Tests](https://img.shields.io/azure-devops/tests/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
-[![Pylint](https://img.shields.io/badge/pylint-9.31-success?style=flat-square)](tasks.yml#L28)
+[![Pylint](https://img.shields.io/badge/pylint-9.34-success?style=flat-square)](tasks.yml#L28)
 
 Merge reports from [multiple tools](#supported-reports) into a single file.
 
@@ -27,21 +27,22 @@ reportmix
 
 ### Arguments
 
-| Argument                    | Description                                                | Default value |
-| --------------------------- | ---------------------------------------------------------- | ------------- |
-| `-h`, `--help`              | Show the help message and exit                             |               |
-| `-V`, `--version`           | Show program's version number and exit                     |               |
-| `-v`, `--verbose`           | Run verbosely (display `DEBUG` logging)                    |               |
-| `--output_dir OUTPUT_DIR`   | The location to write the report                           | `./`          |
-| `--config_file CONFIG_FILE` | The path to the configuration file                         | `.reportmix`  |
-| `--formats FORMATS`         | Report formats to be generated (`csv`, `json`, `html`)     | `html`        |
-| `--fields FIELDS`           | Fields to include in the output report (CSV and HTML only) | _all_         |
-| `--logo LOGO`               | The URL to the organization logo to display on the HTML report  |               |
-| `--meta.*`                  | User-defined metadata fields                               |               |
+| Argument                    | Description                                                    |
+| --------------------------- | -------------------------------------------------------------- |
+| `-h`, `--help`              | Show the help message and exit                                 |
+| `-V`, `--version`           | Show program's version number and exit                         |
+| `-v`, `--verbose`           | Run verbosely (display `DEBUG` logging)                        |
+| `--output_dir OUTPUT_DIR`   | The location to write the report                               |
+| `--config_file CONFIG_FILE` | The path to the configuration file                             |
+| `--formats FORMATS`         | Report formats to be generated (`csv`, `json`, `html`)         |
+| `--fields FIELDS`           | Fields to include in the output report (CSV and HTML only)     |
+| `--hash HASH`               | Fields to use for hash generation                              |
+| `--logo LOGO`               | The URL to the organization logo to display on the HTML report |
+| `--meta.*`                  | User-defined metadata fields                                   |
 
 Run `reportmix --help` to show the full help message.
 
-Plural properties (`formats`, `fields`, ...) support a single value
+Some properties (`formats`, `fields`, `hash`, ...) support a single value
 or a comma-separated list of items (e.g. `--formats "csv,html,json"`).
 
 Tool-specific configuration arguments are documented in the help message
@@ -84,7 +85,9 @@ reportmix --output_dir target --formats "html,csv,json" \
     --sonarqube.host_url "http://sonarqube.acme.corp" --sonarqube.project_key "acme:myproject"
 ```
 
-**Metadata fields** allows to define some fields for each issue in the configuration:
+### Metadata fields
+
+Metadata fields allow to define some fields for each issue in the configuration:
 
 | Name           | Description           | Default value |
 | -------------- | --------------------- | ------------- |
@@ -93,6 +96,16 @@ reportmix --output_dir target --formats "html,csv,json" \
 | `organization` | The organization name |               |
 | `client`       | The client name       |               |
 | `audit_date`   | The audit date        | _`now()`_     |
+
+### Hash
+
+`hash` is a special field. It is not extracted from the reports data but
+computed using some of the issue fields to create a stable unique identifier.
+If multiple issues, in a single merged report or in different reports,
+generated at different times, have the same `hash` value, we can consider
+they are the same, so solving one of them will solve the others. It can be
+especially useful for computing a delta between multiple reports, tracking
+issues fixes, etc.
 
 ## Supported reports
 

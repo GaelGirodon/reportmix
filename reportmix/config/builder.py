@@ -12,6 +12,7 @@ from reportmix.config.property import ConfigProperty
 from reportmix.errors import AppError
 from reportmix.loaders import dependency_check, sonarqube, npm_audit
 from reportmix.models import meta
+from reportmix.models.issue import HASH_FIELDS
 
 # Configuration global group name (for global configuration properties)
 GLOBAL_CONFIG = "global"
@@ -24,6 +25,8 @@ PROPERTIES = [
                    True, "html", "^((F),)*(F)$".replace("F", "csv|html|json")),
     ConfigProperty("fields", "fields to include in the output report (CSV and HTML only)",
                    True, "all", "^((\\w+),)*(\\w+)$"),
+    ConfigProperty("hash", "fields to use for hash generation",
+                   True, ",".join(HASH_FIELDS), "^((\\w+),)*(\\w+)$"),
     ConfigProperty("logo", "the URL to the organization logo to display on the HTML report", False)
 ]
 

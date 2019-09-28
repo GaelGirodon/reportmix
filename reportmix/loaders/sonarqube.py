@@ -131,7 +131,7 @@ class SonarQubeLoader(Loader):
                             version=resp.headers["Sonar-Version"]
                         ),
                         subject=Subject(
-                            identifier=issue["hash"] if "hash" in issue else "",
+                            identifier=issue["component"],
                             name=issue["component"],
                             description="",
                             version="",
