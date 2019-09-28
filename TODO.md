@@ -5,7 +5,7 @@
   - [ ] Improve existing loaders (mapping)
   - [ ] Allow to enable only some tools (`--tools "dependency_check,sonarqube"`)
   - [ ] Dependency Check:
-    - [ ] Use JSON report instead of CSV
+    - [ ] Use JSON report only (instead of CSV)
   - [ ] SonarQube:
     - [ ] Default `project_key` to `<groupId>:<artifactId>` for Maven projects
 - [ ] Improve export formats
