@@ -65,13 +65,14 @@ def limit(value, max_length: int = 64) -> str:
     the full string to allow the user to display it in a tooltip on hovering.
     :param value: Raw value
     :param max_length: Maximum string length (number of characters)
-    :return: The output HTML code
+    :return: The output HTML code (input value is escaped)
     """
     val = str(value) if value else ""
     if len(val) <= max_length:
-        return val
+        return str(jinja2.escape(val))
     # else
-    return '<span title="{}">{}</span>'.format(val, val[:max_length] + "...")
+    return '<span title="{}">{}</span>'.format(str(jinja2.escape(val)),
+                                               str(jinja2.escape(val[:max_length])) + "...")
 
 
 def pretty_field(value: str) -> str:

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ title }}</title>
+    <title>{{ title | escape }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
     <style>
         th, td {
@@ -22,7 +22,7 @@
             <div class="columns is-vcentered">
                 <div class="column has-text-centered-mobile">
                     <h1 class="title">
-                        {{ title }}
+                        {{ title | escape }}
                     </h1>
                     <h2 class="subtitle">
                         {{ tools.keys() | list | sort | join(" · ") }}
@@ -30,7 +30,7 @@
                 </div>
                 {% if logo %}
                     <div class="column is-one-fifth-fullhd is-one-quarter has-text-right has-text-centered-mobile">
-                        <img src="{{ logo }}" alt="Organization logo">
+                        <img src="{{ logo | escape }}" alt="Organization logo">
                     </div>
                 {% endif %}
             </div>

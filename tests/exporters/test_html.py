@@ -12,7 +12,9 @@ def test_limit():
     tests = [
         {"value": "", "max_length": 64, "result": ""},
         {"value": "test", "max_length": 64, "result": "test"},
+        {"value": "t<es>t", "max_length": 64, "result": "t&lt;es&gt;t"},
         {"value": "test", "max_length": 2, "result": '<span title="test">te...</span>'},
+        {"value": "<test", "max_length": 2, "result": '<span title="&lt;test">&lt;t...</span>'},
     ]
     for test in tests:
         assert limit(test["value"], test["max_length"]) == test["result"]
