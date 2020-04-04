@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.4.2 - 2020-04-05
+
+- Fix the SonarQube report loader
+
 ## 0.4.1 - 2019-10-01
 
 - Escape values in the HTML report
