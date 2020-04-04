@@ -19,7 +19,7 @@ from reportmix.models.tool import Tool
 
 # Possible values for types and statuses request parameters
 TYPES = ["CODE_SMELL", "BUG", "VULNERABILITY", "SECURITY_HOTSPOT"]
-DEFAULT_TYPES = TYPES[2]
+DEFAULT_TYPES = ",".join(TYPES[1:3])
 STATUSES = ["OPEN", "CONFIRMED", "REOPENED", "RESOLVED", "CLOSED",
             "TO_REVIEW", "IN_REVIEW", "REVIEWED"]
 DEFAULT_STATUSES = ",".join(STATUSES[0:3])
@@ -74,7 +74,7 @@ class SonarQubeLoader(Loader):
 
         issues_base_url = "{}/api/issues/search?componentKeys={}&statuses={}&s=SEVERITY" \
                           "&asc=false&types={}&ps={}" \
-            .format(cfg["host_url"], cfg["project_key"], DEFAULT_STATUSES,
+            .format(cfg["host_url"], cfg["project_key"], cfg["statuses"] or DEFAULT_STATUSES,
                     cfg["types"] or DEFAULT_TYPES, page_size)
         try:
             issues = []
