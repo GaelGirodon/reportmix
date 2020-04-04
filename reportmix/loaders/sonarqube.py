@@ -96,7 +96,7 @@ class SonarQubeLoader(Loader):
                 # Map issues
                 for issue in result["issues"]:
                     # Severity
-                    if issue["severity"] in SONARQUBE_SEVERITIES:
+                    if "severity" in issue and issue["severity"] in SONARQUBE_SEVERITIES:
                         severity = SONARQUBE_SEVERITIES[issue["severity"]]
                     else:
                         severity = SEVERITIES[0]

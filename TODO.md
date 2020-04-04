@@ -7,6 +7,7 @@
   - [ ] Dependency Check:
     - [ ] Use JSON report only (instead of CSV)
   - [ ] SonarQube:
+    - [ ] Load rules and get security hotspots severity from them
     - [ ] Default `project_key` to `<groupId>:<artifactId>` for Maven projects
 - [ ] Improve export formats
   - [ ] Add field names customization
