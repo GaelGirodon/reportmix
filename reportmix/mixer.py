@@ -13,6 +13,7 @@ from reportmix.exporters.html import HtmlExporter
 from reportmix.exporters.json import JsonExporter
 from reportmix.loaders.dependency_check import DependencyCheckLoader
 from reportmix.loaders.npm_audit import NpmAuditLoader
+from reportmix.loaders.reportmix import ReportMixLoader
 from reportmix.loaders.sonarqube import SonarQubeLoader
 from reportmix.models.issue import FLAT_FIELDS, Issue, HASH_FIELDS, select_fields
 from reportmix.models.meta import Meta
@@ -33,7 +34,8 @@ class ReportMixer:
         self.loaders = {
             "dependency_check": DependencyCheckLoader(config["dependency_check"]),
             "npm_audit": NpmAuditLoader(config["npm_audit"]),
-            "sonarqube": SonarQubeLoader(config["sonarqube"])
+            "sonarqube": SonarQubeLoader(config["sonarqube"]),
+            "reportmix": ReportMixLoader(config["reportmix"])
         }
         self.exporters = {
             "csv": CsvExporter(self.config),

@@ -10,7 +10,7 @@ from typing import Dict
 
 from reportmix.config.property import ConfigProperty
 from reportmix.errors import AppError
-from reportmix.loaders import dependency_check, sonarqube, npm_audit
+from reportmix.loaders import dependency_check, sonarqube, npm_audit, reportmix
 from reportmix.models import meta
 from reportmix.models.issue import HASH_FIELDS
 
@@ -49,7 +49,8 @@ class ConfigBuilder:
             "meta": meta.PROPERTIES,
             "dependency_check": dependency_check.PROPERTIES,
             "npm_audit": npm_audit.PROPERTIES,
-            "sonarqube": sonarqube.PROPERTIES
+            "sonarqube": sonarqube.PROPERTIES,
+            "reportmix": reportmix.PROPERTIES
         }
 
         # Initialize the command-line argument parser
