@@ -55,8 +55,8 @@ setup(
     include_package_data=True,
     python_requires='>=3.7',
     install_requires=[
-        'requests>=2.22.0',
-        'jinja2>=2.10.1'
+        'requests>=2.23.0',
+        'jinja2>=2.11.1'
     ],
     entry_points={
         'console_scripts': [
