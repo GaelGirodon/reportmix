@@ -46,6 +46,12 @@ class ReportMixLoader(Loader):
                 report = csv.DictReader(report_file, delimiter=',', quotechar='"')
                 issues = []
                 for row in report:
+                    analysis_date = None
+                    if row.get("analysis_date"):
+                        analysis_date = datetime.fromisoformat(row["analysis_date"])
+                    source_date = None
+                    if row.get("source_date"):
+                        source_date = datetime.fromisoformat(row["source_date"])
                     issues.append(Issue(
                         ref=row.get("ref"),
                         identifier=row["identifier"],  # Required
@@ -56,14 +62,13 @@ class ReportMixLoader(Loader):
                         more=row.get("more"),
                         action=row.get("action"),
                         effort=row.get("effort"),
-                        analysis_date=datetime.fromisoformat(row["analysis_date"]) if row.get(
-                            "analysis_date") else None,
+                        analysis_date=analysis_date,
                         severity=row.get("severity"),
                         score=row.get("score"),
                         confidence=row.get("confidence"),
                         evidences=row.get("evidences"),
                         source=row.get("source"),
-                        source_date=datetime.fromisoformat(row["source_date"]) if row.get("source_date") else None,
+                        source_date=source_date,
                         url=row.get("url"),
                         tool=Tool(
                             identifier=row["tool_identifier"],  # Required

@@ -69,7 +69,6 @@ class DependencyCheckLoader(Loader):
                         more="",
                         action="",
                         effort="",
-                        # TODO Improve date parsing
                         analysis_date=datetime.strptime(row["ScanDate"][:24],
                                                         "%a, %d %b %Y %H:%M:%S"),
                         severity=severity.guess(row["CVSSv3_BaseSeverity"]),

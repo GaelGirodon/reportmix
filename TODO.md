@@ -6,6 +6,7 @@
   - [ ] Allow to enable only some tools (`--tools "dependency_check,sonarqube"`)
   - [ ] Dependency Check:
     - [ ] Use JSON report only (instead of CSV)
+    - [ ] Improve date parsing
   - [ ] SonarQube:
     - [ ] Load rules and get security hotspots severity from them
     - [ ] Default `project_key` to `<groupId>:<artifactId>` for Maven projects

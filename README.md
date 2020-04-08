@@ -5,7 +5,7 @@
 [![Python version](https://img.shields.io/pypi/pyversions/reportmix?style=flat-square)](https://pypi.org/project/reportmix/)
 [![Build](https://img.shields.io/azure-devops/build/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
 [![Tests](https://img.shields.io/azure-devops/tests/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
-[![Pylint](https://img.shields.io/badge/pylint-9.37-success?style=flat-square)](tasks.yml#L28)
+[![Pylint](https://img.shields.io/badge/pylint-9.34-success?style=flat-square)](tasks.yml#L28)
 
 Merge reports from [multiple tools](#supported-reports) into a single file.
 
