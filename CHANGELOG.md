@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.5.0 - 2020-04-10
+
+- Add the ReportMix report loader
+- Update Python and packages
+
 ## 0.4.3 - 2020-04-05
 
 - Fix the SonarQube report loader
