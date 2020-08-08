@@ -11,10 +11,12 @@ from os import path
 from typing import List
 
 from reportmix.config.property import ConfigProperty
+from reportmix.errors import LoadingError
 from reportmix.loader import Loader
 from reportmix.models import severity
 from reportmix.models.issue import Issue
 from reportmix.models.project import Project
+from reportmix.models.report import Report
 from reportmix.models.subject import Subject
 from reportmix.models.tool import Tool
 
@@ -29,17 +31,18 @@ class DependencyCheckLoader(Loader):
     Dependency-Check report loader (CSV required, JSON optional).
     """
 
-    def load(self) -> List[Issue]:
+    def load(self) -> Report:
         """
         Load the Dependency Check report file (CSV required, JSON optional),
         parse it, map vulnerabilities to issues, and return the list.
-        :return: List of vulnerabilities.
+        :return: Report of vulnerabilities.
         """
         report_file_path = path.realpath(self.config["report_file"])
         if not (report_file_path.endswith(".csv") and path.exists(report_file_path)):
-            logging.warning("Dependency check report ignored (file not found or not *.csv)")
-            return []
+            raise LoadingError("Dependency-Check report ignored (file not found or not *.csv)")
+
         logging.debug("Loading report %s", report_file_path)
+
         try:
             # Load the JSON report to extract scan and project info
             json_report_file_path = re.sub(r"\.csv$", ".json", report_file_path)
@@ -97,7 +100,7 @@ class DependencyCheckLoader(Loader):
                             version=project["version"] if "version" in project else ""
                         )
                     ))
-                return issues
+                tool_version = issues[0].tool.version if len(issues) > 0 else ""
+                return Report(issues, [Tool("dependency_check", "Dependency-Check", tool_version)])
         except Exception as ex:
-            logging.error("Failed to load, parse and map the report (%s)", ex)
-            return []
+            raise LoadingError("Failed to load, parse and map the report: {}".format(ex))

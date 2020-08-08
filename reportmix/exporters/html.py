@@ -8,7 +8,7 @@ from typing import List
 import jinja2
 
 from reportmix.exporter import Exporter
-from reportmix.models.issue import Issue
+from reportmix.models.report import Report
 from reportmix.models.severity import SEVERITIES
 
 
@@ -17,7 +17,7 @@ class HtmlExporter(Exporter):
     Export a merged report to a HTML file.
     """
 
-    def export(self, output_file: str, issues: List[Issue], fields: List[str]):
+    def export(self, report: Report, output_file: str, fields: List[str]):
         # Load HTML template
         env = jinja2.Environment(
             loader=jinja2.PackageLoader("reportmix.exporters", "templates"),
@@ -32,23 +32,22 @@ class HtmlExporter(Exporter):
         # Prepare templates values and statistics
         # Issues by tool
         tools = OrderedDict()
-        tool_names = sorted({i.tool.name for i in issues},
-                            key=lambda tool_name: tool_name.casefold())
+        tool_names = sorted({t.name for t in report.tools})
         for tool in tool_names:
-            tools[tool] = len([i for i in issues if i.tool.name == tool])
+            tools[tool] = len([i for i in report.issues if i.tool.name == tool])
         # Issues by severity
         severities = OrderedDict()
         for severity in SEVERITIES:
-            severities[severity.name] = len([i for i in issues if i.severity == severity])
+            severities[severity.name] = len([i for i in report.issues if i.severity == severity])
         # Issues by type
         types = OrderedDict()
-        type_names = sorted({i.type for i in issues}, key=lambda t: t.casefold())
+        type_names = sorted({i.type for i in report.issues}, key=lambda t: t.casefold())
         for tool in type_names:
-            types[tool] = len([i for i in issues if i.type == tool])
+            types[tool] = len([i for i in report.issues if i.type == tool])
         # Render and write report
         with open(output_file, "wb") as file:
             output = template.render(title=self.config["title"], logo=self.config["logo"],
-                                     issues=[i.flatten() for i in issues], fields=fields,
+                                     issues=[i.flatten() for i in report.issues], fields=fields,
                                      tools=tools, severities=severities, types=types)
             file.write(output.encode("utf-8"))
 

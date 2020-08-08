@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ title | escape }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
     <style>
         th, td {
             white-space: nowrap;
@@ -37,62 +37,74 @@
         </div>
     </div>
 </section>
-<section class="hero is-light">
-    <div class="hero-body">
-        <div class="container">
-            <div class="columns charts has-text-centered">
-                <div class="column is-one-third">
-                    <h3 class="title is-5">Number of issues by tool</h3>
-                    <div>
-                        <canvas id="issuesByTool"></canvas>
+{% if issues %}
+    <section class="hero is-light">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns charts has-text-centered">
+                    <div class="column is-one-third">
+                        <h3 class="title is-5">Number of issues by tool</h3>
+                        <div>
+                            <canvas id="issuesByTool"></canvas>
+                        </div>
                     </div>
-                </div>
-                <div class="column is-one-third">
-                    <h3 class="title is-5">Number of issues by severity</h3>
-                    <div>
-                        <canvas id="issuesBySeverity"></canvas>
+                    <div class="column is-one-third">
+                        <h3 class="title is-5">Number of issues by severity</h3>
+                        <div>
+                            <canvas id="issuesBySeverity"></canvas>
+                        </div>
                     </div>
-                </div>
-                <div class="column is-one-third">
-                    <h3 class="title is-5">Number of issues by type</h3>
-                    <div>
-                        <canvas id="issuesByType"></canvas>
+                    <div class="column is-one-third">
+                        <h3 class="title is-5">Number of issues by type</h3>
+                        <div>
+                            <canvas id="issuesByType"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<section class="section">
-    <div class="container">
-        <div class="table-container">
-            <table class="table is-striped is-hoverable is-fullwidth">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    {% for field in fields %}
-                        <th>{{ field | prettyfield }}</th>
-                    {% endfor %}
-                </tr>
-                </thead>
-                <tbody>
-                {% for issue in issues %}
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="table-container">
+                <table class="table is-striped is-hoverable is-fullwidth">
+                    <thead>
                     <tr>
-                        <th>{{ loop.index }}</th>
+                        <th>#</th>
                         {% for field in fields %}
-                            {% if field.endswith("name") %}
-                                <td>{{ issue[field] | limit(32) }}</td>
-                            {% else %}
-                                <td>{{ issue[field] | limit(48) }}</td>
-                            {% endif %}
+                            <th>{{ field | prettyfield }}</th>
                         {% endfor %}
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for issue in issues %}
+                        <tr>
+                            <th>{{ loop.index }}</th>
+                            {% for field in fields %}
+                                {% if field.endswith("name") %}
+                                    <td>{{ issue[field] | limit(32) }}</td>
+                                {% else %}
+                                    <td>{{ issue[field] | limit(48) }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+{% else %}
+    <section class="hero is-success">
+        <div class="hero-body">
+            <div class="container">
+                <p class="is-size-3 has-text-light has-text-weight-light has-text-centered my-5">
+                    Report is empty
+                </p>
+            </div>
+        </div>
+    </section>
+{% endif %}
 <footer class="footer">
     <div class="content has-text-centered">
         <p>
@@ -100,75 +112,77 @@
         </p>
     </div>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
-<script>
-    // Configuration
-    var borderColor = "#f5f5f5";
-    var backgroundColor = ["#0097e6", "#8c7ae6", "#192a56", "#40739e", "#dcdde1", "#718093"];
-    var legendOptions = {position: 'right'};
-    Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {
-        backgroundColor: "#000000aa",
-        color: "#ffffff",
-        borderRadius: 2,
-        padding: {left: 6, right: 6},
-        display: function (context) {
-            return context.dataset.data[context.dataIndex] > 0;
-        }
-    });
-
-    // Issues by tool
-    var issuesByToolCxt = document.getElementById('issuesByTool');
-    var issuesByToolChart = new Chart(issuesByToolCxt, {
-        type: 'doughnut',
-        data: {
-            labels: {{ tools.keys() | list | tojson }},
-            datasets: [{
-                data: {{ tools.values() | list | tojson }},
-                backgroundColor: backgroundColor.slice(),
-                borderColor: borderColor
-            }]
-        },
-        options: {
-            legend: legendOptions
-        }
-    });
-
-    // Issues by severity
-    var issuesBySeverityCxt = document.getElementById('issuesBySeverity');
-    var issuesBySeverityChart = new Chart(issuesBySeverityCxt, {
-        type: 'doughnut',
-        data: {
-            labels: {{ severities.keys() | list | tojson }},
-            datasets: [{
-                data: {{ severities.values() | list | tojson }},
-                backgroundColor: ["#d1d8e0", "#45aaf2", "#fed330", "#fa8231", "#eb3b5a", "#a55eea"],
-                borderColor: borderColor
-            }]
-        },
-        options: {
-            legend: legendOptions
-        }
-    });
-
-    // Issues by type
-    var issuesByTypeCxt = document.getElementById('issuesByType');
-    var issuesByTypeChart = new Chart(issuesByTypeCxt, {
-        type: 'doughnut',
-        data: {
-            labels: {{ types.keys() | list | tojson }},
-            datasets: [{
-                data: {{ types.values() | list | tojson }},
-                backgroundColor: backgroundColor.slice().reverse(),
-                borderColor: borderColor
-            }]
-        },
-        options: {
-            legend: {
-                position: 'right'
+{% if issues %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
+    <script>
+        // Configuration
+        var borderColor = "#f5f5f5";
+        var backgroundColor = ["#0097e6", "#8c7ae6", "#192a56", "#40739e", "#dcdde1", "#718093"];
+        var legendOptions = {position: 'right'};
+        Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {
+            backgroundColor: "#000000aa",
+            color: "#ffffff",
+            borderRadius: 2,
+            padding: {left: 6, right: 6},
+            display: function (context) {
+                return context.dataset.data[context.dataIndex] > 0;
             }
-        }
-    });
-</script>
+        });
+
+        // Issues by tool
+        var issuesByToolCxt = document.getElementById('issuesByTool');
+        var issuesByToolChart = new Chart(issuesByToolCxt, {
+            type: 'doughnut',
+            data: {
+                labels: {{ tools.keys() | list | tojson }},
+                datasets: [{
+                    data: {{ tools.values() | list | tojson }},
+                    backgroundColor: backgroundColor.slice(),
+                    borderColor: borderColor
+                }]
+            },
+            options: {
+                legend: legendOptions
+            }
+        });
+
+        // Issues by severity
+        var issuesBySeverityCxt = document.getElementById('issuesBySeverity');
+        var issuesBySeverityChart = new Chart(issuesBySeverityCxt, {
+            type: 'doughnut',
+            data: {
+                labels: {{ severities.keys() | list | tojson }},
+                datasets: [{
+                    data: {{ severities.values() | list | tojson }},
+                    backgroundColor: ["#d1d8e0", "#45aaf2", "#fed330", "#fa8231", "#eb3b5a", "#a55eea"],
+                    borderColor: borderColor
+                }]
+            },
+            options: {
+                legend: legendOptions
+            }
+        });
+
+        // Issues by type
+        var issuesByTypeCxt = document.getElementById('issuesByType');
+        var issuesByTypeChart = new Chart(issuesByTypeCxt, {
+            type: 'doughnut',
+            data: {
+                labels: {{ types.keys() | list | tojson }},
+                datasets: [{
+                    data: {{ types.values() | list | tojson }},
+                    backgroundColor: backgroundColor.slice().reverse(),
+                    borderColor: borderColor
+                }]
+            },
+            options: {
+                legend: {
+                    position: 'right'
+                }
+            }
+        });
+    </script>
+{% endif %}
 </body>
 </html>

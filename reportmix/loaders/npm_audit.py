@@ -9,10 +9,12 @@ from os import path
 from typing import List
 
 from reportmix.config.property import ConfigProperty
+from reportmix.errors import LoadingError
 from reportmix.loader import Loader
 from reportmix.models import severity
 from reportmix.models.issue import Issue
 from reportmix.models.project import Project
+from reportmix.models.report import Report
 from reportmix.models.subject import Subject
 from reportmix.models.tool import Tool
 
@@ -27,17 +29,18 @@ class NpmAuditLoader(Loader):
     npm security audit report loader.
     """
 
-    def load(self) -> List[Issue]:
+    def load(self) -> Report:
         """
         Load the npm audit report in JSON format,
         parse it, map vulnerabilities to issues, and return the list.
-        :return: List of vulnerabilities.
+        :return: Report of vulnerabilities.
         """
         report_file_path = path.realpath(self.config["report_file"])
         if not (report_file_path.endswith(".json") and path.exists(report_file_path)):
-            logging.warning("npm audit report ignored (file not found or not *.json)")
-            return []
+            raise LoadingError("npm audit report ignored (file not found or not *.json)")
+
         logging.debug("Loading report %s", report_file_path)
+
         try:
             with open(report_file_path, "r", encoding="utf8") as report_file:
                 report = json.load(report_file)
@@ -83,7 +86,6 @@ class NpmAuditLoader(Loader):
                                 version=""
                             )
                         ))
-                return issues
+                return Report(issues, [Tool("npm_audit", "npm audit", "")])
         except Exception as ex:
-            logging.error("Failed to load, parse and map the report (%s)", ex)
-            return []
+            raise LoadingError("Failed to load, parse and map the report: {}".format(ex))

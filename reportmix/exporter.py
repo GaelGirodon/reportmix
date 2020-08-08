@@ -4,7 +4,7 @@ Report exporter parent class.
 
 from typing import List, Dict
 
-from reportmix.models.issue import Issue
+from reportmix.models.report import Report
 
 
 class Exporter:
@@ -20,10 +20,10 @@ class Exporter:
         """
         self.config = config
 
-    def export(self, output_file: str, issues: List[Issue], fields: List[str]):
+    def export(self, report: Report, output_file: str, fields: List[str]):
         """
         Export a list of issues to a file.
+        :param report: Report with the list of issues to export.
         :param output_file: Path to the output file.
-        :param issues: List of issues to write.
         :param fields: List of fields to include in the output report.
         """

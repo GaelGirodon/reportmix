@@ -9,10 +9,11 @@ from typing import List
 import requests
 
 from reportmix.config.property import ConfigProperty
-from reportmix.errors import AppError
+from reportmix.errors import LoadingError
 from reportmix.loader import Loader
 from reportmix.models.issue import Issue
 from reportmix.models.project import Project
+from reportmix.models.report import Report
 from reportmix.models.severity import SEVERITIES
 from reportmix.models.subject import Subject
 from reportmix.models.tool import Tool
@@ -43,16 +44,15 @@ class SonarQubeLoader(Loader):
     SonarQube project report loader using the Web API.
     """
 
-    def load(self) -> List[Issue]:
+    def load(self) -> Report:
         """
         Load project issues from the SonarQube Web API,
         parse them, map them, and return the list.
-        :return: List of vulnerabilities.
+        :return: Loaded issues.
         """
         cfg = self.config
         if not (cfg["host_url"] and cfg["project_key"]):
-            logging.warning("SonarQube report ignored (required params: host_url, project_key)")
-            return []
+            raise LoadingError("SonarQube report ignored (required params: host_url, project_key)")
 
         # Authentication params
         auth = (cfg["login"] or "", cfg["password"] or "")
@@ -64,8 +64,7 @@ class SonarQubeLoader(Loader):
             project_resp = resp.json()["components"][0]
             project = Project(project_resp["key"], project_resp["name"], "")
         except Exception as ex:
-            logging.error("Failed to get project information (%s)", ex)
-            return []
+            raise LoadingError("Failed to get project information: {}".format(ex))
 
         # Fetch issues info
         page_size = 500  # Number of issues in a result page
@@ -88,8 +87,8 @@ class SonarQubeLoader(Loader):
                 result = resp.json()
                 # Check response body
                 if "paging" not in result or "issues" not in result:
-                    logging.error("Server response is invalid ('paging' and 'issues' keys missing)")
-                    raise AppError()
+                    raise LoadingError(("Server response is invalid "
+                                        "('paging' and 'issues' keys missing)"))
                 total = result["paging"]["total"]
                 fetched_count = (page_index - 1) * page_size + len(result["issues"])
                 logging.debug("Fetched %d / %d issues", fetched_count, total)
@@ -141,10 +140,10 @@ class SonarQubeLoader(Loader):
                         project=project
                     ))
                 page_index += 1  # Go to the next result page
-            return issues
+            tool_version = issues[0].tool.version if len(issues) > 0 else ""
+            return Report(issues, [Tool("sonarqube", "SonarQube", tool_version)])
         except Exception as ex:
-            logging.error("Failed to process issues (%s)", ex)
-            return []
+            raise LoadingError("Failed to process issues: {}".format(ex))
 
 
 # SonarQube severities are a bit "excessive" so we define

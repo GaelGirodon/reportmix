@@ -132,8 +132,7 @@ class ConfigBuilder:
                     logging.error("Value of property '%s' is invalid", name)
                     err_count += 1
         if err_count > 0:
-            logging.error("Configuration is incorrect, fix previous issues and run again")
-            raise AppError()
+            raise AppError("Configuration is incorrect, fix previous issues and run again")
 
         logging.debug("Configuration: %s", str(config))
         return config

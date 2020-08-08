@@ -9,9 +9,12 @@ from os import path
 from typing import List
 
 from reportmix.config.property import ConfigProperty
+from reportmix.errors import LoadingError
 from reportmix.loader import Loader
+from reportmix.models import severity
 from reportmix.models.issue import Issue
 from reportmix.models.project import Project
+from reportmix.models.report import Report
 from reportmix.models.subject import Subject
 from reportmix.models.tool import Tool
 
@@ -26,20 +29,21 @@ class ReportMixLoader(Loader):
     ReportMix report loader (CSV required).
     """
 
-    def load(self) -> List[Issue]:
+    def load(self) -> Report:
         """
         Load the ReportMix report file (CSV required), parse it, and return the
         list of issues.
-        :return: List of issues.
+        :return: Loaded issues.
         """
         if "report_file" not in self.config or self.config["report_file"] is None:
-            logging.warning("ReportMix report ignored (report file path required)")
-            return []
+            raise LoadingError("ReportMix report ignored (report file path required)")
+
         report_file_path = path.realpath(self.config["report_file"])
         if not (report_file_path.endswith(".csv") and path.exists(report_file_path)):
-            logging.warning("ReportMix report ignored (file not found or not *.csv)")
-            return []
+            raise LoadingError("ReportMix report ignored (file not found or not *.csv)")
+
         logging.debug("Loading report %s", report_file_path)
+
         try:
             # Load issues from the CSV report
             with open(report_file_path, "r", newline='') as report_file:
@@ -52,6 +56,9 @@ class ReportMixLoader(Loader):
                     source_date = None
                     if row.get("source_date"):
                         source_date = datetime.fromisoformat(row["source_date"])
+                    evidences = 1
+                    if row.get("evidences", "1").isdecimal():
+                        evidences = int(row.get("evidences", "1"))
                     issues.append(Issue(
                         ref=row.get("ref"),
                         identifier=row["identifier"],  # Required
@@ -63,10 +70,10 @@ class ReportMixLoader(Loader):
                         action=row.get("action"),
                         effort=row.get("effort"),
                         analysis_date=analysis_date,
-                        severity=row.get("severity"),
+                        severity=severity.from_identifier(row.get("severity")),
                         score=row.get("score"),
                         confidence=row.get("confidence"),
-                        evidences=row.get("evidences"),
+                        evidences=evidences,
                         source=row.get("source"),
                         source_date=source_date,
                         url=row.get("url"),
@@ -91,7 +98,7 @@ class ReportMixLoader(Loader):
                         # meta ignored
                         # hash ignored
                     ))
-                return issues
+                tools = list({i.tool.identifier: i.tool for i in issues}.values())
+                return Report(issues, tools)
         except Exception as ex:
-            logging.error("Failed to load and parse the report (%s)", ex)
-            return []
+            raise LoadingError("Failed to load and parse the report: {}".format(ex))

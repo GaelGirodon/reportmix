@@ -27,9 +27,11 @@ healthcheck:
 
 # Run pylint and update score in README.md
 lint:
+  variables:
+    LC_ALL: en_US.utf8 # grep -P
   script:
     - pipenv run pylint reportmix reportmix.py tests setup.py --exit-zero | tee -a .pylint
-    - score=`grep -oP "(?<=rated at )([0-9.]+)" .pylint`
+    - score=$(grep -oP "(?<=rated at )([0-9.]+)" .pylint | tail -1)
     - 'echo "Score: $score"'
     - if [ ! -z "$score" ]; then sed -i -E "8s/pylint-([0-9.]+)-success/pylint-${score}-success/g" README.md; fi
     - rm .pylint

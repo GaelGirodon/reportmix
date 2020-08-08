@@ -4,10 +4,10 @@
 Application main function and version.
 """
 
+import logging
 import sys
 
 from reportmix.config.builder import ConfigBuilder
-from reportmix.errors import AppError
 from reportmix.mixer import ReportMixer
 
 __version__ = "0.5.0"
@@ -21,13 +21,15 @@ def main():
     # Load configuration
     try:
         config = ConfigBuilder(__version__).build()
-    except AppError:
+    except Exception as ex:
+        logging.error(ex)
         sys.exit(1)
 
     # Merge reports
     try:
         ReportMixer(config).merge()
-    except AppError:
+    except Exception as ex:
+        logging.error(ex)
         sys.exit(2)
 
 

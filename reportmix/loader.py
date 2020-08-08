@@ -2,9 +2,9 @@
 Report loader parent class.
 """
 
-from typing import List, Dict
+from typing import Dict
 
-from reportmix.models.issue import Issue
+from reportmix.models.report import Report
 
 
 class Loader:
@@ -20,9 +20,9 @@ class Loader:
         """
         self.config = config
 
-    def load(self) -> List[Issue]:
+    def load(self) -> Report:
         """
-        Load the report and return the list of items.
-        :return: List of items loaded from the report.
+        Load the report and return the list of issues.
+        :return: The loaded report.
         """
-        return []
+        return Report([], [])

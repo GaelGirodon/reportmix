@@ -48,7 +48,7 @@ SEVERITIES: List[Severity] = [
 def guess(value: str) -> Union[Severity, None]:
     """
     Try to guess a severity from a given input value.
-    :param value: Input value.
+    :param value: Input value
     :return: Guessed severity (None if guess failed)
     """
     val = value.strip() if value else value
@@ -68,3 +68,14 @@ def guess(value: str) -> Union[Severity, None]:
     elif val in ("critical", "blocker"):
         sev = SEVERITIES[5]
     return sev
+
+
+def from_identifier(identifier: str) -> Union[Severity, None]:
+    """
+    Return the severity associated with the given identifier.
+    :param identifier: Severity identifier
+    :return: Severity (None if unknown identifier)
+    """
+    if not identifier:
+        return SEVERITIES[0]
+    return next((s for s in SEVERITIES if s.identifier == identifier), None)
