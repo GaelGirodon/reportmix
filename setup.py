@@ -42,21 +42,23 @@ setup(
     author='Gael Girodon',
     author_email='contact@gaelgirodon.fr',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
+        'Environment :: Console',
         'Intended Audience :: Developers',
-        'Topic :: Software Development :: Quality Assurance',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7'
+        'Programming Language :: Python :: 3.8',
+        'Topic :: Security',
+        'Topic :: Software Development :: Quality Assurance',
     ],
     keywords='report mix merge security dependency-check npm audit sonarqube owasp',
     packages=find_packages(exclude=['tests*']),
     include_package_data=True,
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     install_requires=[
-        'requests>=2.23.0',
-        'jinja2>=2.11.1'
+        'requests>=2.24.0',
+        'jinja2>=2.11.2'
     ],
     entry_points={
         'console_scripts': [

@@ -3,7 +3,7 @@
 - [ ] Improve loaders
   - [ ] Support more tools / report formats (Checkmarx, ...)
   - [ ] Improve existing loaders (mapping)
-  - [ ] Allow to enable only some tools (`--tools "dependency_check,sonarqube"`)
+  - [ ] Allow enabling only some tools (`--tools "dependency_check,sonarqube"`)
   - [ ] Dependency Check:
     - [ ] Use JSON report only (instead of CSV)
     - [ ] Improve date parsing
@@ -16,4 +16,3 @@
   - [ ] Improve metadata fields
 - [ ] Improve configuration and CLI
 - [ ] Improve documentation and testing
-- [ ] Release and publish to PyPI
