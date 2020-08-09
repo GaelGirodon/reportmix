@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.6.0 - 2020-08-09
+
+- Improve empty report handling
+- Improve loaders and exporters
+- Improve error handling
+- Update dependencies
+
 ## 0.5.0 - 2020-04-10
 
 - Add the ReportMix report loader
