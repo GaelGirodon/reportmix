@@ -3,9 +3,9 @@
 [![PyPI](https://img.shields.io/pypi/v/reportmix?style=flat-square)](https://pypi.org/project/reportmix/)
 [![License](https://img.shields.io/github/license/GaelGirodon/reportmix?color=informational&style=flat-square)](https://github.com/GaelGirodon/reportmix/blob/master/LICENSE)
 [![Python version](https://img.shields.io/pypi/pyversions/reportmix?style=flat-square)](https://pypi.org/project/reportmix/)
-[![Build](https://img.shields.io/azure-devops/build/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
-[![Tests](https://img.shields.io/azure-devops/tests/gaelgirodon/reportmix/10?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
-[![Pylint](https://img.shields.io/badge/pylint-9.45-success?style=flat-square)](tasks.yml#L28)
+[![Build](https://img.shields.io/azure-devops/build/gaelgirodon/reportmix/12?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
+[![Tests](https://img.shields.io/azure-devops/tests/gaelgirodon/reportmix/12?style=flat-square)](https://dev.azure.com/gaelgirodon/reportmix)
+[![Pylint](https://img.shields.io/badge/pylint-9.46-success?style=flat-square)](tasks.yml#L28)
 
 Merge reports from [multiple tools](#supported-reports) into a single file.
 

@@ -64,7 +64,7 @@ class SonarQubeLoader(Loader):
             project_resp = resp.json()["components"][0]
             project = Project(project_resp["key"], project_resp["name"], "")
         except Exception as ex:
-            raise LoadingError("Failed to get project information: {}".format(ex))
+            raise LoadingError("Failed to get project information: {}".format(ex)) from ex
 
         # Fetch issues info
         page_size = 500  # Number of issues in a result page
@@ -143,7 +143,7 @@ class SonarQubeLoader(Loader):
             tool_version = issues[0].tool.version if len(issues) > 0 else ""
             return Report(issues, [Tool("sonarqube", "SonarQube", tool_version)])
         except Exception as ex:
-            raise LoadingError("Failed to process issues: {}".format(ex))
+            raise LoadingError("Failed to process issues: {}".format(ex)) from ex
 
 
 # SonarQube severities are a bit "excessive" so we define

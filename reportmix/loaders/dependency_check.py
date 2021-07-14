@@ -103,4 +103,4 @@ class DependencyCheckLoader(Loader):
                 tool_version = issues[0].tool.version if len(issues) > 0 else ""
                 return Report(issues, [Tool("dependency_check", "Dependency-Check", tool_version)])
         except Exception as ex:
-            raise LoadingError("Failed to load, parse and map the report: {}".format(ex))
+            raise LoadingError("Failed to load, parse and map the report: {}".format(ex)) from ex

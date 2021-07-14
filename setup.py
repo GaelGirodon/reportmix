@@ -48,17 +48,17 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Topic :: Security',
         'Topic :: Software Development :: Quality Assurance',
     ],
     keywords='report mix merge security dependency-check npm audit sonarqube owasp',
     packages=find_packages(exclude=['tests*']),
     include_package_data=True,
-    python_requires='>=3.8',
+    python_requires='>=3.9',
     install_requires=[
-        'requests>=2.24.0',
-        'jinja2>=2.11.2'
+        'requests>=2.26.0',
+        'jinja2>=3.0.1'
     ],
     entry_points={
         'console_scripts': [

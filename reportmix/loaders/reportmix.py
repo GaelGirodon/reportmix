@@ -101,4 +101,4 @@ class ReportMixLoader(Loader):
                 tools = list({i.tool.identifier: i.tool for i in issues}.values())
                 return Report(issues, tools)
         except Exception as ex:
-            raise LoadingError("Failed to load and parse the report: {}".format(ex))
+            raise LoadingError("Failed to load and parse the report: {}".format(ex)) from ex

@@ -88,4 +88,4 @@ class NpmAuditLoader(Loader):
                         ))
                 return Report(issues, [Tool("npm_audit", "npm audit", "")])
         except Exception as ex:
-            raise LoadingError("Failed to load, parse and map the report: {}".format(ex))
+            raise LoadingError("Failed to load, parse and map the report: {}".format(ex)) from ex

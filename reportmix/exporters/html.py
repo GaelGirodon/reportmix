@@ -6,6 +6,7 @@ from collections import OrderedDict
 from typing import List
 
 import jinja2
+import markupsafe
 
 from reportmix.exporter import Exporter
 from reportmix.models.report import Report
@@ -68,10 +69,10 @@ def limit(value, max_length: int = 64) -> str:
     """
     val = str(value) if value else ""
     if len(val) <= max_length:
-        return str(jinja2.escape(val))
+        return str(markupsafe.escape(val))
     # else
-    return '<span title="{}">{}</span>'.format(str(jinja2.escape(val)),
-                                               str(jinja2.escape(val[:max_length])) + "...")
+    return '<span title="{}">{}</span>'.format(str(markupsafe.escape(val)),
+                                               str(markupsafe.escape(val[:max_length])) + "...")
 
 
 def pretty_field(value: str) -> str:
